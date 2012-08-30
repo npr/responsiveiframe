@@ -91,7 +91,8 @@ ResponsiveIframe.prototype.embed = function() {
   window.onresize = function() {self.messageParent();};    
 }
 ResponsiveIframe.prototype.messageParent = function(scrollTop) {
-	var h = document.body.scrollHeight;
+	var h = document.body.offsetHeight;
+	console.log(h);
 	h = (scrollTop)? h+'s':h;
 	if(top.postMessage){
 		top.postMessage( h , '*');
