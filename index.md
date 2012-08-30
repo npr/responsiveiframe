@@ -9,9 +9,14 @@ title: Responsive Iframes.
     
     <p>ResponsiveIframe is a tiny jQuery plugin developed at NPR to make IFrames be Responsive.</p>
     
-    <p>Due to browser security you will have to include our Javascript file both in the "parent" page, as well
-       as in the page being embedded through an iframe. The Parent page will also have to include latest jQuery.
-       There is no dependency on jQuery for the child page functionality.</p>
+    <p>Due to browser security you will have to include the Javascript file both in the "parent" page, as well
+       as in the page being embedded through an iframe ("child").</p>
+       
+    <p>In the current version, parent page will have to also include the latest jQuery.
+       There is no dependency on jQuery for the child page functionality. In the future versions we would
+       like to remove dependency on jQuery for parent, as well.</p>
+       
+    <p>The "xdomain" parameter in the makeResponsive() function call is optional</p>
     
   </div>
   <div class="span6">    
