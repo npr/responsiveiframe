@@ -4,7 +4,7 @@ title: iFrame 1.
 ---
 <script type="text/javascript">
   ir = new ResponsiveIframe();
-  ir.embed();
+  ir.allowResponsiveEmbedding();
 </script>
 <div>
 	Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam rhoncus elit id velit pharetra sodales. Sed eu tellus in orci vestibulum elementum. Aliquam erat volutpat. In pharetra neque a massa pretium hendrerit. Ut aliquet lorem sed est tincidunt semper. Suspendisse ut diam tortor, ac porttitor tellus. Donec sit amet sapien at magna facilisis facilisis. Vivamus eget libero ac diam molestie cursus. Nulla mauris lectus, ullamcorper vitae blandit sit amet, tempus eget nisi. Ut id lacus ut sem adipiscing rutrum vel sit amet neque. Nullam egestas porttitor risus, at ultricies mi tristique ac. Praesent fermentum ipsum rhoncus lorem scelerisque quis venenatis lacus sagittis. Aenean aliquam, nunc ut sollicitudin suscipit, metus massa sodales justo, quis convallis tellus turpis a nunc. Integer lacinia erat ut dolor rhoncus eu venenatis dolor luctus. Aenean sit amet diam sed erat sagittis tempus. Quisque sed ultrices nunc.
