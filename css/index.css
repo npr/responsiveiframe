@@ -1,9 +1,7 @@
 .hero-unit {
   background-color: #3366CC; /* #282845; */
   color: white;
-
   vertical-align: baseline;
-  padding: 180px;
 }
 
 .bg-noise {
@@ -15,4 +13,13 @@
 
 .btn-npr {
   background-color: #FF3300;
+}
+
+/* Portrait tablet to landscape and desktop */
+@media (min-width: 768px) {
+  
+  .hero-unit {
+    padding: 150px;
+  }
+  
 }
