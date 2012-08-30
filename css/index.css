@@ -15,6 +15,10 @@
   background-color: #FF3300;
 }
 
+.nprminilogo {
+  border: 1px solid white;
+}
+
 /* Portrait tablet to landscape and desktop */
 @media (min-width: 768px) {
   
