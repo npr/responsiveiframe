@@ -84,13 +84,13 @@ if (typeof jQuery !== 'undefined') {
   })( jQuery );
 }
 
-responsiveIframe = function () {var self = this}
+ResponsiveIframe = function () {var self = this}
 
-responsiveIframe.prototype.embed = function() {
+ResponsiveIframe.prototype.embed = function() {
   window.onload = function() {self.messageParent();};
   window.onresize = function() {self.messageParent();};    
 }
-responsiveIframe.prototype.messageParent = function() {
+ResponsiveIframe.prototype.messageParent = function() {
 	var h = document.body.scrollHeight;
 	h = (scrollTop)? h+'s':h;
 	if(top.postMessage){
