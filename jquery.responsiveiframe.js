@@ -86,7 +86,7 @@ if (typeof jQuery !== 'undefined') {
 
 ResponsiveIframe = function () {self = this;}
 
-ResponsiveIframe.prototype.embed = function() {
+ResponsiveIframe.prototype.allowResponsiveEmbedding = function() {
   window.onload = function() {self.messageParent();};
   window.onresize = function() {self.messageParent();};    
 }
