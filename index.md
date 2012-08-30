@@ -7,7 +7,7 @@ title: Responsive Iframes.
   <div class="span5 leftColumn">
     <h4>Getting Started</h4>
     
-    <p>ResponsiveIframe is a tiny jQuery plugin developed at NPR to make IFrames be Responsive.</p>
+    <p>ResponsiveIframe is a tiny jQuery plugin, developed at NPR, to make IFrames <a href="http://en.wikipedia.org/wiki/Responsive_Web_Design">Responsive</a>.</p>
     
     <p>Due to browser security you will have to include the Javascript file both in the "parent" page, as well
        as in the page being embedded through an iframe ("child").</p>
