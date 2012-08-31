@@ -3,7 +3,7 @@ if (typeof jQuery !== 'undefined') {
     var settings = {
       xdomain: '*',
       ie : navigator.userAgent.toLowerCase().indexOf('msie') > -1
-    }
+    };
 
     var methods = {
       // initialization for the parent, the one housing this
@@ -13,16 +13,20 @@ if (typeof jQuery !== 'undefined') {
 
           if (window.postMessage) {
             if (window.addEventListener) {
-              window.addEventListener('message', function(e) { privateMethods.messageHandler($this,e) } , false);
+              window.addEventListener('message', function(e) {
+                privateMethods.messageHandler($this,e);
+              } , false);
             } else if (window.attachEvent) {
-              window.attachEvent('onmessage', function(e) { privateMethods.messageHandler($this,e) }, $this);
+              window.attachEvent('onmessage', function(e) {
+                privateMethods.messageHandler($this,e);
+              }, $this);
             }
           } else {
             setInterval(function () {
               var hash = window.location.hash, matches = hash.match(/^#h(\d+)(s?)$/);
               if (matches) {
                 privateMethods.setHeight($this, matches[1]);
-                if(matches[2] == 's'){
+                if(matches[2] === 's'){
                   scroll(0,0);
                 }
               }
@@ -30,7 +34,7 @@ if (typeof jQuery !== 'undefined') {
           }
         });
       }
-    }
+    };
 
     var privateMethods = {
       messageHandler: function (elem, e) {
@@ -43,7 +47,7 @@ if (typeof jQuery !== 'undefined') {
             checkMatch = matches.length;
         }
 
-        if(settings.xdomain === '*' || matches.length == 1) {
+        if(settings.xdomain === '*' || matches.length === 1) {
           strD = e.data + "";
           r = strD.match(/^(\d+)(s?)$/);
           if(r && r.length == 3){
