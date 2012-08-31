@@ -3,9 +3,9 @@ layout: demo
 title: Demo One.
 ---
 <script type="text/javascript">
-  $('document').ready(function() {
+	$(function() {
     $('iframe').responsiveIframe();
-  });
+  });  
 </script>
 <h1>Demo Time!</h1>
 <div class="row-fluid contentArea">
