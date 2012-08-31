@@ -1,25 +1,36 @@
 ---
 layout: index
-title: Responsive Iframes.
+title: Responsive IFrames
 ---
 
-<div class="row-fluid contentArea">
-  <div class="span5 leftColumn">
-    <h4>Getting Started</h4>
-    
-    <p>ResponsiveIframe is a tiny jQuery plugin, developed at NPR, to make IFrames <a href="http://en.wikipedia.org/wiki/Responsive_Web_Design">Responsive</a>.</p>
-    
-    <p>Due to browser security you will have to include the Javascript file both in the "parent" page, as well
-       as in the page being embedded through an iframe ("child").</p>
-       
-    <p>In the current version, parent page will have to also include the latest jQuery.
-       There is no dependency on jQuery for the child page functionality. In the future versions we would
-       like to remove dependency on jQuery for parent, as well.</p>
-       
-    <p>The "xdomain" parameter in the makeResponsive() function call is optional</p>
-    
+<div class="contentArea">
+  <div class="row-fluid">
+    <div class="span5">
+      {% include getting_started.md %}
+    </div>
+    <div class="span7">    
+      {% include quick_code.md %}
+    </div>
   </div>
-  <div class="span6">    
-    <script src="https://gist.github.com/3538318.js?file=responsiveiframe.html"></script>    
+</div>
+
+<div class="pageFooter">
+
+  <hr>
+    
+  <span class="copyright">
+  Based on the original design and prototype code by <a href="https://github.com/ioseb">Ioseb Dzmanashvili</a>. Built and maintained
+  <a href="http://github.com/npr/" target="_blank">@NPR</a> by <a href="https://github.com/johnymonster">John Nelson</a>,
+  <a href="https://github.com/awinder">Andy Winder</a> and <a href="https://github.com/inadarei">Irakli Nadareishvili</a>
+  </span>
+  
+  <div class="row-fluid">
+    <div class="span10 license">
+    Code licensed under The MIT License (<a href="http://opensource.org/licenses/mit-license.php">MIT</a>). 
+    </div>
+    
+    <div class="span2 colophon">
+      <a href="#">Back to top</a>
+    </div>
   </div>
 </div>
