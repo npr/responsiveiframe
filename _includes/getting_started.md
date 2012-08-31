@@ -4,7 +4,9 @@
 
 Using IFrames is a common method for third-party content embedding. Many popular services 
 (from YouTube to Facebook) use it to isolate embedded content and scripts from the parent 
-page. On a [responsive](http://en.wikipedia.org/wiki/Responsive_Web_Design) website, all 
+page. 
+
+On a [responsive](http://en.wikipedia.org/wiki/Responsive_Web_Design) website, all 
 page components must be responsive. Making IFrames responsive is somewhat of a challenging 
 task. We developed this tiny (0.9KB minified and gzipped) jQuery plugin, at NPR, to make 
 the task easier.
