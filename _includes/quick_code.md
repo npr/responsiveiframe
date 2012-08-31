@@ -10,7 +10,9 @@
     <script src="/js/jquery.js"></script>
     <script src="/js/responsiveiframe.js"></script>
     <script>
-      $('#myIframeID').makeResponsive({ xdomain: '*'});
+      $(function() {
+        $('#myIframeID').makeResponsive({ xdomain: '*'});
+      });
     </script>
 {% endcapture %}
 {{ codesample | markdownify }}

@@ -19,6 +19,13 @@
   border: 1px solid white;
 }
 
+div.back-to-top a {
+  text-align: right;
+  float: right;
+  color: #C2611A;
+  font-weight: bold;
+}
+
 /* Portrait tablet to landscape and desktop */
 @media (min-width: 768px) {
   
