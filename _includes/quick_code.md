@@ -11,7 +11,7 @@
     <script src="/js/responsiveiframe.js"></script>
     <script>
       $(function() {
-        $('#myIframeID').makeResponsive({ xdomain: '*'});
+        $('#myIframeID').responsiveIframe({ xdomain: '*'});
       });
     </script>
 {% endcapture %}
