@@ -84,21 +84,35 @@ if (typeof jQuery !== 'undefined') {
   })( jQuery );
 }
 
-ResponsiveIframe = function () {self = this;}
+;(function(){
+   
+  ResponsiveIframe = function () {self = this;}
 
-ResponsiveIframe.prototype.allowResponsiveEmbedding = function() {
-  window.onload = function() {self.messageParent();};
-  window.onresize = function() {self.messageParent();};    
-}
-ResponsiveIframe.prototype.messageParent = function(scrollTop) {
-	var h = document.body.offsetHeight;
-	console.log(h);
-	h = (scrollTop)? h+'s':h;
-	if(top.postMessage){
-		top.postMessage( h , '*');
-	} else {
-		window.location.hash = 'h'+h;
-	}
-}
+  ResponsiveIframe.prototype.allowResponsiveEmbedding = function() {
+    window.onload = function() {self.messageParent();};
+    window.onresize = function() {self.messageParent();};    
+  }
+  
+  ResponsiveIframe.prototype.messageParent = function(scrollTop) {
+    var h = document.body.offsetHeight;
+    h = (scrollTop)? h+'s':h;
+    if(top.postMessage){
+    	top.postMessage( h , '*');
+    } else {
+    	window.location.hash = 'h'+h;
+    }
+  }   
+  
+  function responsiveIframe() {
+    return new ResponsiveIframe();
+  }  
+  
+  // expose
+  if ('undefined' == typeof exports) {
+    window.responsiveIframe = responsiveIframe;
+  } else {
+    module.exports.responsiveIframe = responsiveIframe;
+  }
+})();
 
 
