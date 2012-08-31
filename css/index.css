@@ -32,6 +32,10 @@ div.back-to-top a {
   .hero-unit {
     padding: 130px;
     padding-top: 100px;
+    
+    -webkit-border-radius: 0;
+    -moz-border-radius: 0;
+    border-radius: 0;    
   }
   
   .contentArea,
