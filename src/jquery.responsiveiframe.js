@@ -39,25 +39,27 @@ if (typeof jQuery !== 'undefined') {
     var privateMethods = {
       messageHandler: function (elem, e) {
         var height,
-          r;
+          r,
+          matches,
+          strD;
 
         if (settings.xdomain !== '*') {
           var regex = new RegExp(settings.xdomain + '$'),
-            matches = e.origin.match(regex),
-            checkMatch = matches.length;
+              checkMatch = matches.length;
+          matches = e.origin.match(regex);
         }
 
         if(settings.xdomain === '*' || matches.length === 1) {
           strD = e.data + "";
           r = strD.match(/^(\d+)(s?)$/);
-          if(r && r.length == 3){
-            height = parseInt(r[1]);
+          if(r && r.length === 3){
+            height = parseInt(r[1], 10);
             if (!isNaN(height)) {
               try {
                 privateMethods.setHeight(elem, height);
               } catch (ex) {}
             }
-            if(r[2] == "s"){
+            if(r[2] === "s"){
               scroll(0,0);
             }
           }
@@ -76,7 +78,7 @@ if (typeof jQuery !== 'undefined') {
           Math.max(D.body.clientHeight, D.documentElement.clientHeight)
         );
       }
-    }
+    };
 
     $.fn.responsiveIframe = function( method ) {
       if ( methods[method] ) {
@@ -88,17 +90,18 @@ if (typeof jQuery !== 'undefined') {
         $.error( 'Method ' +  method + ' does not exist on jQuery.tooltip' );
       }
     };
-  })( jQuery );
+  }( jQuery ));
 }
 
 ;(function(){
-
-  ResponsiveIframe = function () {self = this;}
+  var self,
+      module, 
+      ResponsiveIframe = function () {self = this;};
 
   ResponsiveIframe.prototype.allowResponsiveEmbedding = function() {
     window.addEventListener("load", self.messageParent, false);
     window.addEventListener("resize", self.messageParent, false);
-  }
+  };
 
   ResponsiveIframe.prototype.messageParent = function(scrollTop) {
     var h = document.body.offsetHeight;
@@ -108,16 +111,16 @@ if (typeof jQuery !== 'undefined') {
     } else {
       window.location.hash = 'h'+h;
     }
-  }
+  };
 
   function responsiveIframe() {
     return new ResponsiveIframe();
   }
 
   // expose
-  if ('undefined' == typeof exports) {
+  if ('undefined' === typeof exports) {
     window.responsiveIframe = responsiveIframe;
   } else {
     module.exports.responsiveIframe = responsiveIframe;
   }
-})();
+}());
