@@ -2,7 +2,7 @@
 
 #### Getting Started
     
-ResponsiveIframe is a tiny jQuery plugin, developed at NPR, to make IFrames 
+ResponsiveIframe is a tiny (1.9KB minified) jQuery plugin, developed at NPR, to make IFrames 
 [Responsive](http://en.wikipedia.org/wiki/Responsive_Web_Design).
     
 Due to browser security you will have to include the Javascript file both in 
