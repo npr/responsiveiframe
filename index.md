@@ -28,7 +28,7 @@ title: Responsive IFrames
     </div>
     
     <div class="span2 back-to-top">
-      <a href="#">Back to top</a>
+      <a href="#">Back to top.</a>
     </div>
   </div>
 </div>
