@@ -1,6 +1,6 @@
 {% capture gettingstarted %}
 
-#### What and Why
+#### The What and Why
 
 IFrames are commonly used to allow embedding of third-party content. Many popular services, 
 such as YouTube and Facebook, make extensive use of IFrames in their embeddable widgets.
