@@ -8,10 +8,10 @@ such as YouTube and Facebook, make extensive use of IFrames in their embeddable 
 On a [responsive](http://en.wikipedia.org/wiki/Responsive_Web_Design) website, all 
 page components must be responsive. There are multiple ways of making an IFrame responsive.
 Some responsive IFrame use-cases can be solved with simple Javascript and CSS. Our library
-targets a challenging use-case in which embedded content can have:
+targets a challenging use-case in which embedded content:
 
-* Unknown width and height
-* Unknown width/height ratio
+* Can have unknown width and height
+* Can have unknown width/height ratio
 * Can change its width or height as users interact with dynamic content and we want the size of
 the IFrame to change accordingly to avoid scrollbars.
 
