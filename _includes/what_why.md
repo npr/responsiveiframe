@@ -12,7 +12,7 @@ targets a challenging use-case in which embedded content can have:
 
 * Unknown width and height
 * Unknown width/height ratio
-* Can change its width or height as users interact with the content and we want the size of
+* Can change its width or height as users interact with dynamic content and we want the size of
 the IFrame to change accordingly to avoid scrollbars.
 
 Making IFrames with such constraints is a challenging task. We developed this tiny (0.9KB minified and gzipped) 
