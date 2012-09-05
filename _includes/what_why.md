@@ -1,4 +1,4 @@
-{% capture gettingstarted %}
+{% capture whatwhy %}
 
 #### The What and Why
 
@@ -22,4 +22,4 @@ For simpler use-cases, e.g. targeting the embedding of fixed ratio video content
 check-out: [FitVid.js](http://fitvidsjs.com/), instead.
 
 {% endcapture %}
-{{ gettingstarted | markdownify }}
+{{ whatwhy | markdownify }}

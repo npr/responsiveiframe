@@ -6,7 +6,7 @@ title: Responsive IFrames
 <div class="contentArea">
   <div class="row-fluid">
     <div class="span5">
-      {% include getting_started.md %}
+      {% include what_why.md %}
     </div>
     <div class="span7">    
       {% include quick_code.md %}
