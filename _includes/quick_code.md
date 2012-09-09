@@ -22,10 +22,13 @@ Note: the "xdomain" parameter in the makeResponsive() function call is optional.
     <!-- Corresponding code in the "parent" page -->
     <script src="/js/jquery.js"></script>
     <script src="/js/jquery.responsiveiframe.js"></script>
+
     <script>
-      $(function() {
-        $('#myIframeID').responsiveIframe({ xdomain: '*'});
-      });
+      ;(function($){          
+          $(function(){
+            $('#myIframeID').responsiveIframe({ xdomain: '*'});
+          });        
+      })(jQuery)
     </script>
 {% endcapture %}
 {{ codesample | markdownify }}
