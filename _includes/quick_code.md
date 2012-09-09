@@ -28,7 +28,7 @@ Note: the "xdomain" parameter in the makeResponsive() function call is optional.
           $(function(){
             $('#myIframeID').responsiveIframe({ xdomain: '*'});
           });        
-      })(jQuery)
+      })(jQuery);
     </script>
 {% endcapture %}
 {{ codesample | markdownify }}
