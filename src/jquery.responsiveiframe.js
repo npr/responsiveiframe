@@ -87,7 +87,7 @@ if (typeof jQuery !== 'undefined') {
         $.extend(settings, arguments[0]);
         return methods.init.apply( this );
       } else {
-        $.error( 'Method ' +  method + ' does not exist on jQuery.tooltip' );
+        $.error( 'Method ' +  method + ' does not exist on jQuery.responsiveIframe' );
       }
     };
   }( jQuery ));
