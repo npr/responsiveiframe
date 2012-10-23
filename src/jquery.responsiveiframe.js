@@ -99,8 +99,13 @@ if (typeof jQuery !== 'undefined') {
       ResponsiveIframe = function () {self = this;};
 
   ResponsiveIframe.prototype.allowResponsiveEmbedding = function() {
-    window.addEventListener("load", self.messageParent, false);
-    window.addEventListener("resize", self.messageParent, false);
+    if (window.addEventListener) {
+      window.addEventListener("load", self.messageParent, false);
+      window.addEventListener("resize", self.messageParent, false);
+    } else if (window.attachEvent) {
+      window.attachEvent("onload", self.messageParent);
+      window.attachEvent("onresize", self.messageParent);
+    }
   };
 
   ResponsiveIframe.prototype.messageParent = function(scrollTop) {
