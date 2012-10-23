@@ -99,8 +99,8 @@ if (typeof jQuery !== 'undefined') {
       ResponsiveIframe = function () {self = this;};
 
   ResponsiveIframe.prototype.allowResponsiveEmbedding = function() {
-    window.addEventListener("load", self.messageParent, false);
-    window.addEventListener("resize", self.messageParent, false);
+    $(document).on('ready', self.messageParent);
+    $(window).on('resize', self.messageParent);
   };
 
   ResponsiveIframe.prototype.messageParent = function(scrollTop) {
