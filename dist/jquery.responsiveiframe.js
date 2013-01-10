@@ -1,6 +1,6 @@
-/*! jQuery ResponsiveIframe - v0.0.2 - 2012-09-28
+/*! jQuery ResponsiveIframe - v0.0.2 - 2013-01-10
 * https://github.com/npr/responsiveiframe
-* Copyright (c) 2012 inadarei; Licensed MIT, GPL */
+* Copyright (c) 2013 inadarei; Licensed MIT, GPL */
 
 if (typeof jQuery !== 'undefined') {
   (function( $ ){
@@ -103,8 +103,13 @@ if (typeof jQuery !== 'undefined') {
       ResponsiveIframe = function () {self = this;};
 
   ResponsiveIframe.prototype.allowResponsiveEmbedding = function() {
-    window.addEventListener("load", self.messageParent, false);
-    window.addEventListener("resize", self.messageParent, false);
+    if (window.addEventListener) {
+      window.addEventListener("load", self.messageParent, false);
+      window.addEventListener("resize", self.messageParent, false);
+    } else if (window.attachEvent) {
+      window.attachEvent("onload", self.messageParent);
+      window.attachEvent("onresize", self.messageParent);
+    }
   };
 
   ResponsiveIframe.prototype.messageParent = function(scrollTop) {
