@@ -114,7 +114,7 @@ if (typeof jQuery !== 'undefined') {
     if(top.postMessage){
       top.postMessage( h , '*');
     } else {
-      window.location.hash = 'h'+h;
+      top.location.hash = 'h'+h;
     }
   };
 
