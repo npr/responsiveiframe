@@ -45,12 +45,19 @@ if (typeof jQuery !== 'undefined') {
           strD;
 
         if (settings.xdomain !== '*') {
-          var regex = new RegExp(settings.xdomain + '$'),
-              checkMatch = matches.length;
-          matches = e.origin.match(regex);
+          var regex = new RegExp(settings.xdomain + '$');
+          if(e.orgin == "null"){
+            throw new Error("messageHandler( elem, e): There is no origin.  You are viewing the page from your file system.  Please run through a web server.");
+          }
+          if(e.origin.match(regex)){
+            matches = true;
+          }else{
+            throw new Error("messageHandler( elem, e): The orgin doesn't match the responsiveiframe  xdomain.");
+          }
+        
         }
 
-        if(settings.xdomain === '*' || matches.length === 1) {
+        if(settings.xdomain === '*' || matches ) {
           strD = e.data + "";
           r = strD.match(/^(\d+)(s?)$/);
           if(r && r.length === 3){
