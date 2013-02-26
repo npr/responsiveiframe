@@ -2,7 +2,8 @@ if (typeof jQuery !== 'undefined') {
   (function( $ ){
     var settings = {
       xdomain: '*',
-      ie : navigator.userAgent.toLowerCase().indexOf('msie') > -1
+      ie : navigator.userAgent.toLowerCase().indexOf('msie') > -1,
+      scrollToTop: true
     };
 
     var methods = {
@@ -26,7 +27,7 @@ if (typeof jQuery !== 'undefined') {
               var hash = window.location.hash, matches = hash.match(/^#h(\d+)(s?)$/);
               if (matches) {
                 privateMethods.setHeight($this, matches[1]);
-                if(matches[2] === 's'){
+                if (settings.scrollToTop && matches[2] === 's'){
                   scroll(0,0);
                 }
               }
@@ -59,7 +60,7 @@ if (typeof jQuery !== 'undefined') {
                 privateMethods.setHeight(elem, height);
               } catch (ex) {}
             }
-            if(r[2] === "s"){
+            if (settings.scrollToTop && r[2] === "s"){
               scroll(0,0);
             }
           }
@@ -95,7 +96,7 @@ if (typeof jQuery !== 'undefined') {
 
 ;(function(){
   var self,
-      module, 
+      module,
       ResponsiveIframe = function () {self = this;};
 
   ResponsiveIframe.prototype.allowResponsiveEmbedding = function() {
