@@ -51,8 +51,7 @@ if (typeof jQuery !== 'undefined') {
           if(e.origin.match(regex)){
             matches = true;
           }else{
-            throw new Error("messageHandler( elem, e): The orgin doesn't match the responsiveiframe  xdomain.")
-
+            throw new Error("messageHandler( elem, e): The orgin doesn't match the responsiveiframe  xdomain.");
           }
         
         }
