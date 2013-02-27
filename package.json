@@ -2,7 +2,7 @@
   "name": "jquery.responsiveiframe",
   "title": "jQuery ResponsiveIframe",
   "description": "jQuery ResponsiveIframe by NPR.",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "homepage": "https://github.com/npr/responsiveiframe",
   "author": {
     "name": "inadarei",
@@ -26,7 +26,11 @@
     }
   ],
   "dependencies": {
-    "jquery": "~1.5"
+    "grunt": "~0.4.0",
+    "grunt-contrib-qunit":"",
+    "grunt-contrib-concat":"",
+    "grunt-contrib-uglify":"",
+    "grunt-jslint":""
   },
   "keywords": []
 }

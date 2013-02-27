@@ -1,32 +1,41 @@
-/*global module:false*/
+'use strict';
+
 module.exports = function(grunt) {
 
   // Project configuration.
   grunt.initConfig({
-    pkg: '<json:package.json>',
-    meta: {
-      banner: '/*! <%= pkg.title || pkg.name %> - v<%= pkg.version %> - ' +
+    pkg: grunt.file.readJSON('package.json'),
+    banner: '/*! <%= pkg.title || pkg.name %> - v<%= pkg.version %> - ' +
         '<%= grunt.template.today("yyyy-mm-dd") %>\n' +
-        '<%= pkg.homepage ? "* " + pkg.homepage + "\n" : "" %>' +
+        '<%= pkg.homepage ? "* " + pkg.homepage + "\\n" : "" %>' +
         '* Copyright (c) <%= grunt.template.today("yyyy") %> <%= pkg.author.name %>;' +
-        ' Licensed <%= _.pluck(pkg.licenses, "type").join(", ") %> */'
+        ' Licensed <%= _.pluck(pkg.licenses, "type").join(", ") %> */\n',
+    // Task configuration.
+    clean: {
+      files: ['dist']
     },
     concat: {
+      options: {
+        banner: '<%= banner %>'
+      },
       dist: {
-        src: ['<banner:meta.banner>', '<file_strip_banner:src/<%= pkg.name %>.js>'],
+        src: ['src/<%= pkg.name %>.js'],
         dest: 'dist/<%= pkg.name %>.js'
       }
     },
-    min: {
+    uglify: {
+      options: {
+        banner: '<%= banner %>'
+      },
       dist: {
-        src: ['<banner:meta.banner>', '<config:concat.dist.dest>'],
+        src: '<%= concat.dist.dest %>',
         dest: 'dist/<%= pkg.name %>.min.js'
       }
     },
     qunit: {
       files: ['test/**/*.html']
     },
-    lint: {
+    jslint: {
       files: ['grunt.js', 'src/**/*.js', 'test/**/*.js']
     },
     watch: {
@@ -50,11 +59,15 @@ module.exports = function(grunt) {
       globals: {
         jQuery: true
       }
-    },
-    uglify: {}
+    }
   });
 
+  grunt.loadNpmTasks('grunt-jslint');
+  grunt.loadNpmTasks('grunt-contrib-qunit');
+  grunt.loadNpmTasks('grunt-contrib-concat');
+  grunt.loadNpmTasks('grunt-contrib-uglify');
+
   // Default task.
-  grunt.registerTask('default', 'lint qunit concat min');
+  grunt.registerTask('default', ['jslint','concat','clean','uglify']);
 
 };
