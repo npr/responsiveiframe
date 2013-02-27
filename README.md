@@ -6,10 +6,11 @@
 
 Built and maintained [@NPR](http://github.com/npr/) by
 * [John Nelson](https://github.com/johnymonster),
-* [Andy Winder](https://github.com/awinder) and
-* [Irakli Nadareishvili](https://github.com/inadarei)
+* [Mike Seid](https://github.com/mbseid),
+* [Irakli Nadareishvili](https://github.com/inadarei) and
+* [Andy Winder](https://github.com/awinder)
 
-Based on the original design/prototype by [Ioseb Dzmanashvili](https://github.com/ioseb). 
+Based on the original prototype by [Ioseb Dzmanashvili](https://github.com/ioseb). 
 
 ## License 
 
