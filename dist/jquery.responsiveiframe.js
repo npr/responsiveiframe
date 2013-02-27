@@ -1,12 +1,12 @@
-/*! jQuery ResponsiveIframe - v0.0.2 - 2013-01-10
+/*! jQuery ResponsiveIframe - v0.0.3 - 2013-02-26
 * https://github.com/npr/responsiveiframe
 * Copyright (c) 2013 inadarei; Licensed MIT, GPL */
-
 if (typeof jQuery !== 'undefined') {
   (function( $ ){
     var settings = {
       xdomain: '*',
-      ie : navigator.userAgent.toLowerCase().indexOf('msie') > -1
+      ie : navigator.userAgent.toLowerCase().indexOf('msie') > -1,
+      scrollToTop: true
     };
 
     var methods = {
@@ -30,7 +30,7 @@ if (typeof jQuery !== 'undefined') {
               var hash = window.location.hash, matches = hash.match(/^#h(\d+)(s?)$/);
               if (matches) {
                 privateMethods.setHeight($this, matches[1]);
-                if(matches[2] === 's'){
+                if (settings.scrollToTop && matches[2] === 's'){
                   scroll(0,0);
                 }
               }
@@ -48,12 +48,19 @@ if (typeof jQuery !== 'undefined') {
           strD;
 
         if (settings.xdomain !== '*') {
-          var regex = new RegExp(settings.xdomain + '$'),
-              checkMatch = matches.length;
-          matches = e.origin.match(regex);
+          var regex = new RegExp(settings.xdomain + '$');
+          if(e.orgin == "null"){
+            throw new Error("messageHandler( elem, e): There is no origin.  You are viewing the page from your file system.  Please run through a web server.");
+          }
+          if(e.origin.match(regex)){
+            matches = true;
+          }else{
+            throw new Error("messageHandler( elem, e): The orgin doesn't match the responsiveiframe  xdomain.");
+          }
+        
         }
 
-        if(settings.xdomain === '*' || matches.length === 1) {
+        if(settings.xdomain === '*' || matches ) {
           strD = e.data + "";
           r = strD.match(/^(\d+)(s?)$/);
           if(r && r.length === 3){
@@ -63,7 +70,7 @@ if (typeof jQuery !== 'undefined') {
                 privateMethods.setHeight(elem, height);
               } catch (ex) {}
             }
-            if(r[2] === "s"){
+            if (settings.scrollToTop && r[2] === "s"){
               scroll(0,0);
             }
           }
@@ -99,7 +106,7 @@ if (typeof jQuery !== 'undefined') {
 
 ;(function(){
   var self,
-      module, 
+      module,
       ResponsiveIframe = function () {self = this;};
 
   ResponsiveIframe.prototype.allowResponsiveEmbedding = function() {
