@@ -54,7 +54,6 @@ if (typeof jQuery !== 'undefined') {
           }else{
             throw new Error("messageHandler( elem, e): The orgin doesn't match the responsiveiframe  xdomain.");
           }
-        
         }
 
         if(settings.xdomain === '*' || matches ) {
@@ -102,28 +101,47 @@ if (typeof jQuery !== 'undefined') {
 }
 
 ;(function(){
-  var self,
-      module,
-      ResponsiveIframe = function () {self = this;};
+  var ResponsiveIframe = function () {},
+      defaults = {
+        scrollToTop: false,
+        pollInterval: 75,
+        padding: 16
+      };
 
-  ResponsiveIframe.prototype.allowResponsiveEmbedding = function() {
+  ResponsiveIframe.prototype.allowResponsiveEmbedding = function(opts) {
+    var previousHeight, scrollToTop, pollInterval, padding;
+
+    opts = opts || defaults;
+    scrollToTop = opts.scrollToTop;
+    pollInterval = opts.pollInterval;
+    padding = opts.padding;
+
+    function messageParent(newHeight) {
+      newHeight += 15;
+      newHeight += (scrollToTop) ? 's' : '';
+      if(top.postMessage){
+        top.postMessage( newHeight , '*');
+      } else {
+        window.location.hash = 'h'+newHeight;
+      }
+    };
+
+    function checkHeight() {
+      var currentHeight = document.body.offsetHeight;
+      if (currentHeight !== previousHeight) {
+        previousHeight = currentHeight;
+        messageParent(currentHeight, scrollToTop);
+      }
+    }
+
     if (window.addEventListener) {
-      window.addEventListener("load", self.messageParent, false);
-      window.addEventListener("resize", self.messageParent, false);
+      window.addEventListener("load", checkHeight, false);
     } else if (window.attachEvent) {
-      window.attachEvent("onload", self.messageParent);
-      window.attachEvent("onresize", self.messageParent);
+      window.attachEvent("onload", checkHeight);
     }
-  };
 
-  ResponsiveIframe.prototype.messageParent = function(scrollTop) {
-    var h = document.body.offsetHeight;
-    h = (scrollTop)? h+'s':h;
-    if(top.postMessage){
-      top.postMessage( h , '*');
-    } else {
-      window.location.hash = 'h'+h;
-    }
+    // No "content has resized" event in the iframe, so we need to poll...
+    setInterval(checkHeight, pollInterval);
   };
 
   function responsiveIframe() {
