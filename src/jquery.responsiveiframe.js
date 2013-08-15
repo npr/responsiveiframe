@@ -97,7 +97,7 @@ if (typeof jQuery !== 'undefined') {
       defaults = {
         resizeOnly: true,
         scrollToTop: false,
-        pollInterval: 75
+        pollInterval: 150
       };
 
   function getDocHeight() {
