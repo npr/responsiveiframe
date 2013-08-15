@@ -149,9 +149,14 @@ if (typeof jQuery !== 'undefined') {
   }
 
   // expose
-  if ('undefined' === typeof exports) {
-    window.responsiveIframe = responsiveIframe;
-  } else {
+  if (typeof define === 'function' && define.amd) {
+    // AMD
+    define(responsiveIframe);
+  } else if (typeof module !== 'undefined' && module.exports) {
+    // CommonJS
     module.exports.responsiveIframe = responsiveIframe;
+  } else {
+    // Drop onto window
+    window.responsiveIframe = responsiveIframe;
   }
 }());
