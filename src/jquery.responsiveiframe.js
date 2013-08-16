@@ -54,7 +54,6 @@ if (typeof jQuery !== 'undefined') {
           }else{
             throw new Error("messageHandler( elem, e): The orgin doesn't match the responsiveiframe  xdomain.");
           }
-        
         }
 
         if(settings.xdomain === '*' || matches ) {
@@ -77,14 +76,6 @@ if (typeof jQuery !== 'undefined') {
       // Sets the height of the iframe
       setHeight : function (elem, height) {
         elem.css('height', height + 'px');
-      },
-      getDocHeight: function () {
-        var D = document;
-        return Math.min(
-          Math.max(D.body.scrollHeight, D.documentElement.scrollHeight),
-          Math.max(D.body.offsetHeight, D.documentElement.offsetHeight),
-          Math.max(D.body.clientHeight, D.documentElement.clientHeight)
-        );
       }
     };
 
@@ -102,27 +93,62 @@ if (typeof jQuery !== 'undefined') {
 }
 
 ;(function(){
-  var self,
-      module,
-      ResponsiveIframe = function () {self = this;};
+  var ResponsiveIframe = function () {},
+      defaults = {
+        resizeOnly: true,
+        scrollToTop: false,
+        pollInterval: 150
+      };
 
-  ResponsiveIframe.prototype.allowResponsiveEmbedding = function() {
-    if (window.addEventListener) {
-      window.addEventListener("load", self.messageParent, false);
-      window.addEventListener("resize", self.messageParent, false);
-    } else if (window.attachEvent) {
-      window.attachEvent("onload", self.messageParent);
-      window.attachEvent("onresize", self.messageParent);
+  function getDocHeight() {
+    var body = document.body,
+       html = document.documentElement;
+
+    return Math.max( body.scrollHeight, body.offsetHeight,
+                       html.clientHeight, html.scrollHeight, html.offsetHeight );
+  }
+
+  ResponsiveIframe.prototype.allowResponsiveEmbedding = function(opts) {
+    var previousHeight;
+
+    opts = opts || {};
+    for (var k in defaults) {
+      if (defaults.hasOwnProperty(k) && !opts.hasOwnProperty(k)) {
+        opts[k] = defaults[k];
+      }
     }
-  };
 
-  ResponsiveIframe.prototype.messageParent = function(scrollTop) {
-    var h = document.body.offsetHeight;
-    h = (scrollTop)? h+'s':h;
-    if(top.postMessage){
-      top.postMessage( h , '*');
-    } else {
-      window.location.hash = 'h'+h;
+    function messageParent(newHeight) {
+      newHeight += (opts.scrollToTop) ? 's' : '';
+      if(top.postMessage){
+        top.postMessage( newHeight , '*');
+      } else {
+        window.location.hash = 'h'+newHeight;
+      }
+    };
+
+    function firstLoad() {
+      var currentHeight = getDocHeight();
+      if (!opts.resizeOnly) {
+        messageParent(currentHeight);
+      }
+
+      // No "content has resized" event in the iframe, so we need to poll...
+      setInterval(checkHeight, opts.pollInterval);
+    }
+
+    function checkHeight() {
+      var currentHeight = getDocHeight();
+      if (currentHeight !== previousHeight) {
+        previousHeight = currentHeight;
+        messageParent(currentHeight);
+      }
+    }
+
+    if (window.addEventListener) {
+      window.addEventListener("load", firstLoad, false);
+    } else if (window.attachEvent) {
+      window.attachEvent("onload", firstLoad);
     }
   };
 
@@ -131,9 +157,14 @@ if (typeof jQuery !== 'undefined') {
   }
 
   // expose
-  if ('undefined' === typeof exports) {
-    window.responsiveIframe = responsiveIframe;
-  } else {
+  if (typeof define === 'function' && define.amd) {
+    // AMD
+    define(responsiveIframe);
+  } else if (typeof module !== 'undefined' && module.exports) {
+    // CommonJS
     module.exports.responsiveIframe = responsiveIframe;
+  } else {
+    // Drop onto window
+    window.responsiveIframe = responsiveIframe;
   }
 }());
