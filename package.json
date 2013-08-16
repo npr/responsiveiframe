@@ -27,10 +27,13 @@
   ],
   "dependencies": {
     "grunt": "~0.4.0",
-    "grunt-contrib-qunit":"",
-    "grunt-contrib-concat":"",
-    "grunt-contrib-uglify":"",
-    "grunt-jslint":""
+    "grunt-contrib-qunit": "",
+    "grunt-jslint": ""
   },
-  "keywords": []
+  "keywords": [],
+  "devDependencies": {
+    "grunt-contrib-clean": "~0.5.0",
+    "grunt-contrib-uglify": "~0.2.2",
+    "grunt-contrib-concat": "~0.3.0"
+  }
 }
