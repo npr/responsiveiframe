@@ -25,9 +25,10 @@ module.exports = function(grunt) {
     },
     uglify: {
       options: {
-        banner: '<%= banner %>'
+        banner: '<%= banner %>',
+        compress: true
       },
-      dist: {
+      build: {
         files: {
           'dist/<%= pkg.name %>.min.js': ['<%= concat.dist.dest %>']
         }
@@ -37,7 +38,15 @@ module.exports = function(grunt) {
       files: ['test/**/*.html']
     },
     jslint: {
-      files: ['grunt.js', 'src/**/*.js', 'test/**/*.js']
+      client:{
+        src: ['grunt.js', 'src/**/*.js', 'test/**/*.js'] ,
+        directives: {
+            browser: true,
+            predef: [
+                'jQuery'
+            ]
+        }
+      }
     },
     watch: {
       files: '<config:lint.files>',
@@ -70,6 +79,6 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-uglify');
 
   // Default task.
-  grunt.registerTask('default', ['jslint','concat','clean','uglify']);
+  grunt.registerTask('default', ['jslint','clean','concat','uglify']);
 
 };

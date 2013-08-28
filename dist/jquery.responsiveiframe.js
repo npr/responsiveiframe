@@ -1,4 +1,4 @@
-/*! jQuery ResponsiveIframe - v0.0.3 - 2013-02-26
+/*! jQuery ResponsiveIframe - v0.0.3 - 2013-08-28
 * https://github.com/npr/responsiveiframe
 * Copyright (c) 2013 inadarei; Licensed MIT, GPL */
 if (typeof jQuery !== 'undefined') {
