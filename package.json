@@ -5,9 +5,16 @@
   "version": "0.0.3",
   "homepage": "https://github.com/npr/responsiveiframe",
   "author": {
-    "name": "inadarei",
-    "email": "irakli@npr.org"
+    "name": "Irakli Nadareishvili",
+    "email": "irakli@npr.org",
+    "url":"http://www.freshblurbs.com"
   },
+  "contributors" : [
+    {"name" : "Andew Winder", "url" : "https://github.com/awinder"},
+    {"name" : "John Nelson", "url" : "https://github.com/johnymonster"},
+    {"name" : "Michael Seid", "url" : "https://github.com/mbseid"},
+    {"name" : "Adam McElwee", "url" : "https://github.com/acmcelwee"},
+  ]
   "repository": {
     "type": "git",
     "url": "https://github.com/npr/responsiveiframe.git"
