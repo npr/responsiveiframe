@@ -1,6 +1,6 @@
-/*! jQuery ResponsiveIframe - v0.0.3 - 2013-08-28
+/*! jQuery ResponsiveIframe - v0.0.3 - 2013-09-05
 * https://github.com/npr/responsiveiframe
-* Copyright (c) 2013 inadarei; Licensed MIT, GPL */
+* Copyright (c) 2013 Irakli Nadareishvili; Licensed MIT, GPL */
 if (typeof jQuery !== 'undefined') {
   (function( $ ){
     var settings = {
@@ -49,7 +49,7 @@ if (typeof jQuery !== 'undefined') {
 
         if (settings.xdomain !== '*') {
           var regex = new RegExp(settings.xdomain + '$');
-          if(e.orgin == "null"){
+          if(e.origin == "null"){
             throw new Error("messageHandler( elem, e): There is no origin.  You are viewing the page from your file system.  Please run through a web server.");
           }
           if(e.origin.match(regex)){

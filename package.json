@@ -14,8 +14,8 @@
     {"name" : "Andew Winder", "url" : "https://github.com/awinder"},
     {"name" : "John Nelson", "url" : "https://github.com/johnymonster"},
     {"name" : "Michael Seid", "url" : "https://github.com/mbseid"},
-    {"name" : "Adam McElwee", "url" : "https://github.com/acmcelwee"},
-  ]
+    {"name" : "Adam McElwee", "url" : "https://github.com/acmcelwee"}
+  ],
   "repository": {
     "type": "git",
     "url": "https://github.com/npr/responsiveiframe.git"
