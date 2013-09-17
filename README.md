@@ -7,6 +7,7 @@
 Built and maintained [@NPR](http://github.com/npr/) by
 * [John Nelson](https://github.com/johnymonster),
 * [Mike Seid](https://github.com/mbseid),
+* [Jared Biehler] (https://github.com/jaredbiehler),
 * [Irakli Nadareishvili](https://github.com/inadarei) and
 * [Andy Winder](https://github.com/awinder)
 
