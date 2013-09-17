@@ -4,7 +4,7 @@ title: Demo One.
 ---
 <script type="text/javascript">
 	$(function() {
-    $('iframe').responsiveIframe({xdomain: "foobar"});
+    $('iframe').responsiveIframe({xdomain: '*'});
   });  
 </script>
 
