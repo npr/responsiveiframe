@@ -4,6 +4,7 @@ Based on the original design/prototype by [Ioseb Dzmanashvili](https://github.co
 Built and maintained [@NPR](http://github.com/npr/) by
 [John Nelson](https://github.com/johnymonster),
 [Michael Seid](https://github.com/mbseid),
+[Jared Biehler] (https://github.com/jaredbiehler),
 [Andy Winder](https://github.com/awinder) and
 [Irakli Nadareishvili](https://github.com/inadarei)
 
