@@ -1,139 +1,144 @@
+/*! jQuery ResponsiveIframe - v0.0.3 - 2013-09-05
+* https://github.com/npr/responsiveiframe
+* Copyright (c) 2013 Irakli Nadareishvili; Licensed MIT, GPL */
 if (typeof jQuery !== 'undefined') {
-  (function( $ ){
-    var settings = {
-      xdomain: '*',
-      ie : navigator.userAgent.toLowerCase().indexOf('msie') > -1,
-      scrollToTop: true
-    };
+    (function ($) {
+        'use strict';
+        var settings = {
+                xdomain: '*',
+                ie: navigator.userAgent.toLowerCase().indexOf('msie') > -1,
+                scrollToTop: true
+            },
+            privateMethods = {
+                messageHandler: function (elem, e) {
+                    var height, r, matches, strD, regex;
 
-    var methods = {
-      // initialization for the parent, the one housing this
-      init: function() {
-        return this.each(function(self){
-          var $this = $(this);
+                    if (settings.xdomain !== '*') {
+                        regex = new RegExp(settings.xdomain + '$');
+                        if (e.origin === "null") {
+                            throw new Error("messageHandler( elem, e): There is no origin.  You are viewing the page from your file system.  Please run through a web server.");
+                        }
+                        if (e.origin.match(regex)) {
+                            matches = true;
+                        } else {
+                            throw new Error("messageHandler( elem, e): The orgin doesn't match the responsiveiframe  xdomain.");
+                        }
+                    }
 
-          if (window.postMessage) {
-            if (window.addEventListener) {
-              window.addEventListener('message', function(e) {
-                privateMethods.messageHandler($this,e);
-              } , false);
-            } else if (window.attachEvent) {
-              window.attachEvent('onmessage', function(e) {
-                privateMethods.messageHandler($this,e);
-              }, $this);
-            }
-          } else {
-            setInterval(function () {
-              var hash = window.location.hash, matches = hash.match(/^#h(\d+)(s?)$/);
-              if (matches) {
-                privateMethods.setHeight($this, matches[1]);
-                if (settings.scrollToTop && matches[2] === 's'){
-                  scroll(0,0);
+                    if (settings.xdomain === '*' || matches) {
+                        strD = String(e.data.split('###')[1]);
+                        r = strD.match(/^(\d+)(s?)$/);
+                        if (r && r.length === 3) {
+                            height = parseInt(r[1], 10);
+                            if (!isNaN(height)) {
+                                try {
+                                    privateMethods.setHeight(elem, height);
+                                } catch (ignore) {}
+                            }
+                            if (settings.scrollToTop && r[2] === "s") {
+                                scroll(0, 0);
+                            }
+                        }
+                    }
+                },
+
+                // Sets the height of the iframe
+                setHeight: function (elem, height) {
+                    height = height + 130;
+                    $('iframe[src="' + elem + '"]').css('height', height + 'px');
+                },
+                getDocHeight: function () {
+                    var D = document;
+                    return Math.min(Math.max(D.body.scrollHeight, D.documentElement.scrollHeight), Math.max(D.body.offsetHeight, D.documentElement.offsetHeight), Math.max(D.body.clientHeight, D.documentElement.clientHeight));
                 }
-              }
-            }, 150);
-          }
-        });
-      }
-    };
+            },
+            methods = {
+                // initialization for the parent, the one housing this
+                init: function () {
+                    return this.each(function () {
+                        var $this = $(this);
+                        if (window.postMessage) {
+                            if (window.addEventListener) {
+                                window.addEventListener('message', function (e) {
+                                    var elem = e.data.split('###')[0];
+                                    privateMethods.messageHandler(elem, e);
+                                }, false);
+                            } else if (window.attachEvent) {
+                                window.attachEvent('onmessage', function (e) {
+                                    var elem = e.data.split('###')[0];
+                                    privateMethods.messageHandler(elem, e);
+                                }, $this);
+                            }
+                        } else {
+                            setInterval(function () {
+                                var elem = $('iframe[src="' + $this[0].src + '"]'),
+                                    hash = elem[0].contentWindow.location.hash,
+                                    matches;
+                                if (hash) {
+                                    matches = hash.match(/^#h(\d+)(s?)$/);
+                                    if (matches) {
+                                        privateMethods.setHeight($this[0].src, matches[1]);
+                                    }
+                                }
+                            }, 150);
+                        }
+                    });
+                }
+            };
 
-    var privateMethods = {
-      messageHandler: function (elem, e) {
-        var height,
-          r,
-          matches,
-          strD;
-
-        if (settings.xdomain !== '*') {
-          var regex = new RegExp(settings.xdomain + '$');
-          if(e.origin == "null"){
-            throw new Error("messageHandler( elem, e): There is no origin.  You are viewing the page from your file system.  Please run through a web server.");
-          }
-          if(e.origin.match(regex)){
-            matches = true;
-          }else{
-            throw new Error("messageHandler( elem, e): The orgin doesn't match the responsiveiframe  xdomain.");
-          }
-        
-        }
-
-        if(settings.xdomain === '*' || matches ) {
-          strD = e.data + "";
-          r = strD.match(/^(\d+)(s?)$/);
-          if(r && r.length === 3){
-            height = parseInt(r[1], 10);
-            if (!isNaN(height)) {
-              try {
-                privateMethods.setHeight(elem, height);
-              } catch (ex) {}
+        $.fn.responsiveIframe = function (method) {
+            if (methods[method]) {
+                return methods[method].apply(this, Array.prototype.slice.call(arguments, 1));
             }
-            if (settings.scrollToTop && r[2] === "s"){
-              scroll(0,0);
+            if (typeof method === 'object' || !method) {
+                $.extend(settings, method);
+                return methods.init.apply(this);
             }
-          }
-        }
-      },
-
-      // Sets the height of the iframe
-      setHeight : function (elem, height) {
-        elem.css('height', height + 'px');
-      },
-      getDocHeight: function () {
-        var D = document;
-        return Math.min(
-          Math.max(D.body.scrollHeight, D.documentElement.scrollHeight),
-          Math.max(D.body.offsetHeight, D.documentElement.offsetHeight),
-          Math.max(D.body.clientHeight, D.documentElement.clientHeight)
-        );
-      }
-    };
-
-    $.fn.responsiveIframe = function( method ) {
-      if ( methods[method] ) {
-        return methods[ method ].apply( this, Array.prototype.slice.call( arguments, 1 ));
-      } else if ( typeof method === 'object' || ! method ) {
-        $.extend(settings, arguments[0]);
-        return methods.init.apply( this );
-      } else {
-        $.error( 'Method ' +  method + ' does not exist on jQuery.responsiveIframe' );
-      }
-    };
-  }( jQuery ));
+            $.error('Method ' + method + ' does not exist on jQuery.responsiveIframe');
+        };
+    }(jQuery));
 }
 
-;(function(){
-  var self,
-      module,
-      ResponsiveIframe = function () {self = this;};
+(function () {
+    'use strict';
+    var self,
+        module,
+        ResponsiveIframe = function () {
+            self = this;
+        };
 
-  ResponsiveIframe.prototype.allowResponsiveEmbedding = function() {
-    if (window.addEventListener) {
-      window.addEventListener("load", self.messageParent, false);
-      window.addEventListener("resize", self.messageParent, false);
-    } else if (window.attachEvent) {
-      window.attachEvent("onload", self.messageParent);
-      window.attachEvent("onresize", self.messageParent);
+    ResponsiveIframe.prototype.allowResponsiveEmbedding = function () {
+        if (window.addEventListener) {
+            window.addEventListener("load", self.messageParent, false);
+            window.addEventListener("resize", self.messageParent, false);
+            self.messageParent();
+        } else if (window.attachEvent) {
+            window.attachEvent("onload", self.messageParent);
+            window.attachEvent("onresize", self.messageParent);
+            self.messageParent();
+        }
+    };
+
+    ResponsiveIframe.prototype.messageParent = function (scrollTop) {
+        var h = document.body.offsetHeight,
+            message;
+        h = scrollTop ? h + 's' : h;
+        message = window.location.href + '###' + h;
+        if (top.postMessage) {
+            top.postMessage(message, '*');
+        } else {
+            window.location.hash = 'h' + h;
+        }
+    };
+
+    function responsiveIframe() {
+        return new ResponsiveIframe();
     }
-  };
 
-  ResponsiveIframe.prototype.messageParent = function(scrollTop) {
-    var h = document.body.offsetHeight;
-    h = (scrollTop)? h+'s':h;
-    if(top.postMessage){
-      top.postMessage( h , '*');
+    // expose
+    if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
+        module.exports.responsiveIframe = responsiveIframe;
     } else {
-      window.location.hash = 'h'+h;
+        window.responsiveIframe = responsiveIframe;
     }
-  };
-
-  function responsiveIframe() {
-    return new ResponsiveIframe();
-  }
-
-  // expose
-  if ('undefined' === typeof exports) {
-    window.responsiveIframe = responsiveIframe;
-  } else {
-    module.exports.responsiveIframe = responsiveIframe;
-  }
 }());
