@@ -1,4 +1,4 @@
-/*! jQuery ResponsiveIframe - v0.0.3 - 2013-09-25
+/*! jQuery ResponsiveIframe - v0.0.3 - 2013-09-26
 * https://github.com/npr/responsiveiframe
 * Copyright (c) 2013 Irakli Nadareishvili; Licensed MIT, GPL */
 /*! jQuery ResponsiveIframe - v0.0.3 - 2013-09-05
@@ -48,7 +48,7 @@ if (typeof jQuery !== 'undefined') {
                 // Sets the height of the iframe
                 setHeight: function (elem, height) {
                     height = height + 130;
-                    $('iframe[src="' + elem + '"]').css('height', height + 'px');
+                    $('iframe[name="' + elem + '"]').css('height', height + 'px');
                 },
                 getDocHeight: function () {
                     var D = document;
@@ -74,7 +74,7 @@ if (typeof jQuery !== 'undefined') {
                             }
                         } else {
                             setInterval(function () {
-                                var elem = $('iframe[src="' + $this[0].src + '"]'),
+                                var elem = $('iframe[name="' + $this[0].name + '"]'),
                                     hash = elem[0].contentWindow.location.hash,
                                     matches;
                                 if (hash) {
@@ -126,7 +126,7 @@ if (typeof jQuery !== 'undefined') {
         var h = document.body.offsetHeight,
             message;
         h = scrollTop ? h + 's' : h;
-        message = window.location.href + '###' + h;
+        message = window.name + '###' + h;
         if (top.postMessage) {
             top.postMessage(message, '*');
         } else {
