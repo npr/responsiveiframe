@@ -1,6 +1,6 @@
 # responsiveiframe
 
-A simplified NPR Visuals fork of [NPR Tech's responsiveiframe](http://npr.github.com/responsiveiframe/). Does not support IE < 9.
+A simplified NPR Visuals fork of [NPR Tech's responsiveiframe](http://npr.github.com/responsiveiframe/). Does not support IE < 9. Requires jQuery on both the parent and child pages.
 
 Licensed as MIT. See `LICENSE-MIT`.
 
