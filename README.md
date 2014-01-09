@@ -4,6 +4,20 @@ A simplified NPR Visuals fork of [NPR Tech's responsiveiframe](http://npr.github
 
 Licensed as MIT. See `LICENSE-MIT`.
 
+## Usage
+
+On the parent page:
+
+* Include `parent.js`
+* Call `$('iframe').responsiveIframe();`, selecting your iframe
+* You can optionally pass in a regex to filter incoming message domains: `$('iframe').responsiveIframe({ xdomain: '*\.npr\.org' });`
+
+On the child page:
+
+* Include `child.js`
+* Invoke `setupResponsiveChild();`
+* You can optionally pass in a number of milliseconds to enable automaticaly updating the height at that rate (in addition to on load and resize events). Like this `setupResponsiveChild(500);`
+
 ## Credits
 
 Modified by [@nprapps](http://github.com/nprapps).
