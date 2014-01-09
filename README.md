@@ -1,10 +1,15 @@
-## Documentation
+# responsiveiframe
 
-[http://npr.github.com/responsiveiframe/](http://npr.github.com/responsiveiframe/)
+A simplified NPR Visuals fork of [NPR Tech's responsiveiframe](http://npr.github.com/responsiveiframe/). Does not support IE < 9.
+
+Licensed as MIT. See `LICENSE-MIT`.
 
 ## Credits
 
-Built and maintained [@NPR](http://github.com/npr/) by
+Modified by [@nprapps](http://github.com/nprapps).
+
+Originally built by [@NPR](http://github.com/npr/) developers:
+
 * [John Nelson](https://github.com/johnymonster),
 * [Mike Seid](https://github.com/mbseid),
 * [Jared Biehler] (https://github.com/jaredbiehler),
@@ -12,28 +17,3 @@ Built and maintained [@NPR](http://github.com/npr/) by
 * [Andy Winder](https://github.com/awinder)
 
 Based on the original prototype by [Ioseb Dzmanashvili](https://github.com/ioseb). 
-
-## License 
-
-The MIT License (MIT)
-
-Copyright (c) 2011-2013 NPR.
-
-Permission is hereby granted, free of charge, to any person obtaining
-a copy of this software and associated documentation files (the
-'Software'), to deal in the Software without restriction, including
-without limitation the rights to use, copy, modify, merge, publish,
-distribute, sublicense, and/or sell copies of the Software, and to
-permit persons to whom the Software is furnished to do so, subject to
-the following conditions:
-
-The above copyright notice and this permission notice shall be
-included in all copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND,
-EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
-IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
-CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
-TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
-SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
