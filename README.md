@@ -17,7 +17,7 @@ Based on the original prototype by [Ioseb Dzmanashvili](https://github.com/ioseb
 
 The MIT License (MIT)
 
-Copyright (c) 2011-2013 NPR.
+Copyright (c) 2011-2014 NPR.
 
 Permission is hereby granted, free of charge, to any person obtaining
 a copy of this software and associated documentation files (the
