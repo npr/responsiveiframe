@@ -34,7 +34,7 @@ If you have dynamic content and need finer control over resize events, your chil
 ## How it works
 
 The `parent.js` library and a small bit of javascript is injected onto the parent page. This
-code writes an iframe to the page in a container of your choice. The request for the iframe's contents includes querystring parameters for the `initialWidth` and `childId` of the child page. The `initialWidth` prevents allows the child to know its size immediately on load. (In iOS the child frame can not determine it's own width accurately.) The `childId` allows multiple children to be embedded on the same page, each with their own communication to the parent.
+code writes an iframe to the page in a container of your choice. The request for the iframe's contents includes querystring parameters for the `initialWidth` and `childId` of the child page. The `initialWidth` allows the child to know its size immediately on load. (In iOS the child frame can not determine it's own width accurately.) The `childId` allows multiple children to be embedded on the same page, each with their own communication to the parent.
 
 The child page includes `child.js` and its own javascript. It invokes the `setupResponsiveIframe` function, which initializes cross-iframe communication to the parent, renders the any dynamic contents and then sends the computed height of the child to the parent via [postMessage](https://developer.mozilla.org/en-US/docs/Web/API/Window.postMessage). Upon receiving this message the parent resizes the containing iframe, thus ensuring the contents of the child are always visible.
 
