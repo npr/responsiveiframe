@@ -1,6 +1,6 @@
 # responsiveiframe
 
-A simplified NPR Visuals fork of [NPR Tech's responsiveiframe](http://npr.github.com/responsiveiframe/). Does not support IE < 9. Requires jQuery on both the parent and child pages.
+A simplified NPR Visuals fork of [NPR Tech's responsiveiframe](http://npr.github.com/responsiveiframe/). Requires jQuery on both the parent and child pages.
 
 Licensed as MIT. See `LICENSE-MIT`.
 
@@ -11,6 +11,16 @@ A library that allows iframes to be embedded in a way that allows them to resize
 The typical use-case for this is embedding small custom bits of code (charts, maps, etc.) inside a CMS without override CSS or Javascript conflicts.
 
 See an example of this in action is on [NPR.org](http://www.npr.org/blogs/health/2014/01/14/262484689/why-the-youth-gap-on-obamacare-exchanges-could-be-a-yawner).
+
+## Tested in
+
+* Internet Explorer 9 (Windows 7)
+* Chrome 32 (Mac 10.9)
+* Firefox 26 (Mac 10.9)
+* Safari 7 (Mac 10.9)
+* iOS 7 Safari
+
+Internet Explorer versions earlier than **9** are not supported!
 
 ## Usage
 
@@ -42,14 +52,8 @@ The parent page also registers for resize events. Any time one is received, the 
 
 ## Credits
 
-Modified by [@nprapps](http://github.com/nprapps).
+Rewritten by [@nprapps](http://github.com/nprapps).
 
-Originally built by [@NPR](http://github.com/npr/) developers:
+Originally built by [@NPR](http://github.com/npr/).
 
-* [John Nelson](https://github.com/johnymonster),
-* [Mike Seid](https://github.com/mbseid),
-* [Jared Biehler] (https://github.com/jaredbiehler),
-* [Irakli Nadareishvili](https://github.com/inadarei) and
-* [Andy Winder](https://github.com/awinder)
-
-Based on the original prototype by [Ioseb Dzmanashvili](https://github.com/ioseb). 
+Based on an original prototype by [Ioseb Dzmanashvili](https://github.com/ioseb). 
