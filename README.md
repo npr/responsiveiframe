@@ -8,7 +8,7 @@ Licensed as MIT. See `LICENSE-MIT`.
 
 A library that allows iframes to be embedded in a way that allows them to resize responsively within their parent and bypasses the usual cross-domain issues.
 
-The typical use-case for this is embedding small custom bits of code (charts, maps, etc.) insiCMS without override CSS or Javascript conflicts.
+The typical use-case for this is embedding small custom bits of code (charts, maps, etc.) inside a CMS without override CSS or Javascript conflicts.
 
 See an example of this in action is on [NPR.org](http://www.npr.org/blogs/health/2014/01/14/262484689/why-the-youth-gap-on-obamacare-exchanges-could-be-a-yawner).
 
@@ -29,16 +29,16 @@ See an example of this in action is on [NPR.org](http://www.npr.org/blogs/health
 
 ### Manual resize events
 
-If you have dynamic content and need finer control over resize events, your child window can invoke `sendHeightToParent()` at any time to force the iframe to update it's size.
+If you have dynamic content and need finer control over resize events, your child window can invoke `sendHeightToParent()` at any time to force the iframe to update its size.
 
 ## How it works
 
-The `parent.js` library and a small bit of javascript is injected onto the parent page. This
-code writes an iframe to the page in a container of your choice. The request for the iframe's contents includes querystring parameters for the `initialWidth` and `childId` of the child page. The `initialWidth` allows the child to know its size immediately on load. (In iOS the child frame can not determine it's own width accurately.) The `childId` allows multiple children to be embedded on the same page, each with their own communication to the parent.
+The `parent.js` library and a small bit of javascript are injected onto the parent page. This
+code writes an iframe to the page in a container of your choice. The request for the iframe's contents includes querystring parameters for the `initialWidth` and `childId` of the child page. The `initialWidth` allows the child to know its size immediately on load. (In iOS the child frame can not determine its own width accurately.) The `childId` allows multiple children to be embedded on the same page, each with its own communication to the parent.
 
 The child page includes `child.js` and its own javascript. It invokes the `setupResponsiveIframe` function, which initializes cross-iframe communication to the parent, renders the any dynamic contents and then sends the computed height of the child to the parent via [postMessage](https://developer.mozilla.org/en-US/docs/Web/API/Window.postMessage). Upon receiving this message the parent resizes the containing iframe, thus ensuring the contents of the child are always visible.
 
-The parent page also registers for resize events and anytime one is received, sends the new container width to each child via `postMessage`. The child rerenders it's content and sends back the new height.
+The parent page also registers for resize events. Any time one is received, the parent sends the new container width to each child via `postMessage`. The child rerenders its content and sends back the new height.
 
 ## Credits
 
