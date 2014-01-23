@@ -2,7 +2,7 @@
 
 A simplified NPR Visuals fork of [NPR Tech's responsiveiframe](http://npr.github.com/responsiveiframe/). Requires jQuery on both the parent and child pages.
 
-Licensed as MIT. See `LICENSE-MIT`.
+Released under the MIT open source license. See `LICENSE` for details.
 
 ## What is it?
 
