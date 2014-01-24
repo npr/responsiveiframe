@@ -19,6 +19,7 @@ See an example of this in action is on [NPR.org](http://www.npr.org/blogs/health
 * Firefox 26 (Mac 10.9)
 * Safari 7 (Mac 10.9)
 * iOS 7 Safari
+* Android 4.4 Chrome
 
 Internet Explorer versions earlier than **9** are not supported!
 
