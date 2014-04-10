@@ -131,8 +131,16 @@ window.responsiveParent = function(config) {
 
         var node = document.createElement("iframe");
 
+        var url = settings.src;
+
+        if (url.indexOf('?') < 0) {
+            url += '?';
+        } else {
+            url += '&';
+        }
+
         // Send the initial width as a querystring parameter.
-        node.src = settings.src + '?initialWidth=' + width + '&childId=' + settings['id'];
+        node.src = url + 'initialWidth=' + width + '&childId=' + settings['id'];
 
         // Super not-dry way to set attrs on our iFrame.
         node.setAttribute('width', '100%');
