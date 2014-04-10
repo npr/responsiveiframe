@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Graphic Embed : NPR</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no" />
+    <style>
+        body {
+            font: 14px/1.4 Arial, Helvetica, sans-serif;
+            color: #333;
+        }
+        h3 { margin: 0 0 1em 0; }
+        p { margin: 0 0 1em 0; }
+        p.note {
+            margin-top: -1em;
+            font-size: 90%;
+            color: #666;
+            font-style: italic;
+        }
+        textarea {
+            display: block;
+            margin-bottom: 2em;
+        }
+        .example { border: 1px solid #eee; }
+        #example-2 { margin-bottom: 2em; }
+    </style>
+</head>
+<body>
+    <h3>iFrame Preview</h3>
+    <p class="note">(Border shown for preview purposes.)</p>
+
+    <div class="example" id="example-1"></div>
+    <div class="example" id="example-2"></div>
+
+
+    <h3>Embed Code</h3>
+
+<!-- textarea contents -->
+    <textarea readonly="readonly" rows="10" cols="50">
+<div id="example-1"></div>
+<script src="PATH-TO-THIS-FOLDER/js/lib/parent.js" type="text/javascript"></script>
+<script type="text/javascript">
+$(function() {
+    $('#example-1').responsiveIframe({
+        src: 'PATH-TO-THIS-FOLDER/child-1.html'
+    });
+});
+</script>
+
+<div id="example-2"></div>
+<script src="PATH-TO-THIS-FOLDER/js/lib/parent.js" type="text/javascript"></script>
+<script type="text/javascript">
+$(function() {
+    $('#example-2').responsiveIframe({
+        src: 'PATH-TO-THIS-FOLDER/child-2.html'
+    });
+});
+</script>
+
+    </textarea>
+<!-- end textarea contents -->
+
+    <p class="note">
+        Notes: Publish out your project, then replace:<br />
+        - "<strong>PATH-TO-THIS-FOLDER</strong>" with the actual published path to your files<br />
+        - "<strong>example-graphic</strong>" with a div name that's more descriptive of your project (if you have multiple responsive iframes, each needs a unique div ID
+    </p>
+
+    <script src="js/lib/jquery.js" type="text/javascript"></script>
+    <script src="js/lib/parent.js" type="text/javascript"></script>
+    <script type="text/javascript">
+        $('#example-1').responsiveIframe({
+            src: 'child-1.html' 
+        });
+        $('#example-2').responsiveIframe({
+            src: 'child-2.html' 
+        });
+    </script>
+</body>
+</html>
