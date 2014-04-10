@@ -4,26 +4,25 @@
 <head>
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no" />
-
 </head>
 <body>
+
     <div id="example"></div>
     <div id="example2"></div>
 
 
-    <script type="text/javascript" src="../../src/parent.js"></script>
-    <script type="text/javascript">
-        m = window.responsiveIframe({
-            src: 'child.html',
-            id: 'example'
-        });
-        m.setup();
+    <script type="text/javascript" src="../../src/responsiveIframe.js"></script>
 
-        z = window.responsiveIframe({
-            src: 'child.html',
-            id: 'example2'
-        });
-        z.setup();
+    <script type="text/javascript">
+        var responsiveIds = ['example', 'example2'];
+        for (var i = 0; i < responsiveIds.length; i++) {
+            var config = {
+                src: 'child.html',
+                id: responsiveIds[i]
+            }
+            var m = window.responsiveParent(config)
+            m.setup();
+        }
     </script>
 </body>
 </html>
