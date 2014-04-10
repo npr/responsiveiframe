@@ -20,32 +20,42 @@
             display: block;
             margin-bottom: 2em;
         }
-        #preview {
-            border: 1px solid #eee;
-            margin-bottom: 2em;
-        }
+        .example { border: 1px solid #eee; }
+        #example-2 { margin-bottom: 2em; }
     </style>
 </head>
 <body>
     <h3>iFrame Preview</h3>
     <p class="note">(Border shown for preview purposes.)</p>
 
-    <div id="preview">
-    </div>
+    <div class="example" id="example-1"></div>
+    <div class="example" id="example-2"></div>
+
 
     <h3>Embed Code</h3>
 
 <!-- textarea contents -->
     <textarea readonly="readonly" rows="10" cols="50">
-<div id="example-graphic"></div>
+<div id="example-1"></div>
 <script src="PATH-TO-THIS-FOLDER/js/lib/parent.js" type="text/javascript"></script>
 <script type="text/javascript">
 $(function() {
-    $('#example-graphic').responsiveIframe({
-        src: 'PATH-TO-THIS-FOLDER/child.html'
+    $('#example-1').responsiveIframe({
+        src: 'PATH-TO-THIS-FOLDER/child-1.html'
     });
 });
 </script>
+
+<div id="example-2"></div>
+<script src="PATH-TO-THIS-FOLDER/js/lib/parent.js" type="text/javascript"></script>
+<script type="text/javascript">
+$(function() {
+    $('#example-2').responsiveIframe({
+        src: 'PATH-TO-THIS-FOLDER/child-2.html'
+    });
+});
+</script>
+
     </textarea>
 <!-- end textarea contents -->
 
@@ -58,8 +68,11 @@ $(function() {
     <script src="js/lib/jquery.js" type="text/javascript"></script>
     <script src="js/lib/parent.js" type="text/javascript"></script>
     <script type="text/javascript">
-        $('#preview').responsiveIframe({
-            src: 'child.html' 
+        $('#example-1').responsiveIframe({
+            src: 'child-1.html' 
+        });
+        $('#example-2').responsiveIframe({
+            src: 'child-2.html' 
         });
     </script>
 </body>
