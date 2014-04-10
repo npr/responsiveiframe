@@ -26,7 +26,7 @@ Make your browser window wider or narrower to see test responsiveness in these e
 ### On the parent page
 
 * Include `parent.js`.
-* Call `$('div').responsiveIframe({ src: 'child.html' });`, selecting your container div and passing the path to your child page as `src`. 
+* Call `$('div').responsiveIframe({ src: 'child.html' });`, selecting your container div and passing the path to your child page as `src`.
 * You can optionally pass in a regex to filter incoming message domains: `$('iframe').responsiveIframe({ xdomain: '*\.npr\.org' });`.
 
 For example:
@@ -54,10 +54,10 @@ For example:
 
 ```
 <script type="text/javascript" src="js/child.js"></script>
-<script type="text/javascript">	
+<script type="text/javascript">
     $(window).load(function() {
         setupResponsiveChild();
-    });	
+    });
 </script>
 ```
 
@@ -67,16 +67,17 @@ This might be useful in cases where sections of your child page need to be redra
 
 ```
 <script type="text/javascript" src="js/child.js"></script>
-<script type="text/javascript">	
+<script type="text/javascript">
     function drawBox(width) {
         // do something (like re-rendering a graphic based on the new width)
+        // Note that this callback function is passed the width of the parent.
     }
 
     $(window).load(function() {
         setupResponsiveChild({
             renderCallback: drawBox
         });
-    });	
+    });
 </script>
 ```
 
@@ -88,7 +89,7 @@ For example, say you have a button on the page, and when that button is clicked,
 
 ```
 <script type="text/javascript" src="js/child.js"></script>
-<script type="text/javascript">	
+<script type="text/javascript">
     function onButtonClicked() {
         // do something
         sendHeightToParent();
@@ -97,7 +98,7 @@ For example, say you have a button on the page, and when that button is clicked,
 
     $(window).load(function() {
         setupResponsiveChild();
-    });	
+    });
 </script>
 ```
 
@@ -137,4 +138,4 @@ Rewritten by [@nprapps](http://github.com/nprapps).
 
 Originally built by [@NPR](http://github.com/npr/).
 
-Based on an original prototype by [Ioseb Dzmanashvili](https://github.com/ioseb). 
+Based on an original prototype by [Ioseb Dzmanashvili](https://github.com/ioseb).
