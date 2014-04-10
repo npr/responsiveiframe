@@ -11,7 +11,6 @@ window.responsiveChild = function(config){
      * Setup this document as a responsive iframe child.
      */
     this.setup = function() {
-        console.log(config);
         for (var key in config) {
             settings[key] = config[key];
         }
@@ -80,8 +79,6 @@ window.responsiveChild = function(config){
 
         settings['id'] = match[1];
         var width = parseInt(match[2]);
-
-        console.log(width, parentWidth);
 
         if (width != parentWidth) {
             parentWidth = width;
