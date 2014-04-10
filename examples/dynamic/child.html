@@ -20,6 +20,9 @@
         var $box = $('#box');
         var $dimensions = $('#dimensions');
 
+        // This is the callback function.
+        // In this case, it's drawing boxes. But you can do ANYTHING.
+        // Note: This is called with the width of the parent as an argument.
         function drawBox(width) {
             var boxWidth = Math.floor(Math.random() * width);
             var boxHeight = Math.floor(Math.random() * 1000);
