@@ -1,6 +1,7 @@
 (function($) {
     var settings = {
         renderCallback: null,
+        id:null,
         xdomain: '*',
         polling: 0
     };
@@ -44,14 +45,15 @@
         }
 
         // Parent sent width
-        var match = e.data.match(/^responsive-parent-(\d+)$/);
+        var match = e.data.match(/^responsive-parent-(\w+)-(\d+)$/);
 
-        if (!match || match.length !== 2) {
+        if (!match || match.length !== 3) {
             // Not the message we're listening for
             return;
         }
 
-        var width = parseInt(match[1]);
+        settings['id'] = match[1];
+        var width = parseInt(match[2]);
 
         if (width != parentWidth) {
             parentWidth = width;
@@ -70,7 +72,7 @@
     window.sendHeightToParent = function() {
         var height = $('body').height().toString();
 
-        window.top.postMessage('responsive-child-'+ height, '*');
+        window.top.postMessage('responsive-child-' + settings['id'] + '-'+ height, '*');
     }
 
     /*
@@ -80,6 +82,8 @@
         $.extend(settings, config);
 
         window.addEventListener('message', processMessage, false);
+
+        settings['id'] = getParameterByName('childId');
 
         // Initial width is sent as querystring parameter
         var width = parseInt(getParameterByName('initialWidth'));

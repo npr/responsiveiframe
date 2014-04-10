@@ -25,7 +25,7 @@ window.responsiveIframe = function(config) {
         var node = document.createElement("iframe");
 
         // Send the initial width as a querystring parameter.
-        node.src = settings.src + '?initialWidth=' + width;
+        node.src = settings.src + '?initialWidth=' + width + '&childId=' + settings['id'];
 
         // Super not-dry way to set attrs on our iFrame.
         node.setAttribute('width', '100%');
@@ -66,14 +66,18 @@ window.responsiveIframe = function(config) {
         }
 
         // Child sent height
-        var match = e.data.match(/^responsive-child-(\d+)$/);
+        var match = e.data.match(/^responsive-child-(\w+)-(\d+)$/);
 
-        if (!match || match.length !== 2) {
+        if (!match || match.length !== 3) {
             return false;
         }
 
-        var height = parseInt(match[1]);
-        el.firstChild.setAttribute('height', height + 'px');
+        var childId = match[1];
+        var height = parseInt(match[2]);
+
+        if (el.getAttribute('id') == childId) {
+            el.firstChild.setAttribute('height', height + 'px');
+        }
     }
 
     /*
@@ -82,7 +86,7 @@ window.responsiveIframe = function(config) {
     function sendWidthToChild(el) {
 
         var width = el.offsetWidth.toString();
-        el.firstChild.contentWindow.postMessage('responsive-parent-' + width, '*');
+        el.firstChild.contentWindow.postMessage('responsive-parent-' + settings['id'] + '-' + width, '*');
     }
 
     return this;
