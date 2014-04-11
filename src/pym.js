@@ -181,8 +181,12 @@ var pym = (function() {
             if (!match || match.length !== 3) { return; }
 
             // Get the ID out of the message.
-            // TKTK: error
-            //this.id = match[1];
+            var id = match[1];
+
+            // Ensure message is meant for this child
+            if (id != this.id) {
+                return;
+            }
 
             // Get the width out of the message.
             var width = parseInt(match[2]);
