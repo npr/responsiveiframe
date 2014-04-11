@@ -126,22 +126,20 @@ $(document).ready(function() {
         sendHeightToParent();
     }
     
-    function setup() {
-        if (Modernizr.svg) {
-            d3.csv(graphic_data_url, function(error, data) {
-                graphic_data = data;
+    // initial setup
+    if (Modernizr.svg) {
+        d3.csv(graphic_data_url, function(error, data) {
+            graphic_data = data;
 
-                graphic_data.forEach(function(d) {
-                    d.date = d3.time.format('%Y-%m').parse(d.date);
-                    d.jobs = d.jobs / 1000;
-                });
-
-                setupResponsiveChild({
-                    renderCallback: drawGraphic 
-                });
+            graphic_data.forEach(function(d) {
+                d.date = d3.time.format('%Y-%m').parse(d.date);
+                d.jobs = d.jobs / 1000;
             });
-        }
+
+            var v = window.responsiveChild({
+                renderCallback: drawGraphic 
+            });
+            v.setup();
+        });
     }
-    
-    setup();
 });
