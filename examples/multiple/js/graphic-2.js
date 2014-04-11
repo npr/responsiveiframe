@@ -129,7 +129,7 @@ function drawGraphic(width) {
                 return line(d.value);
             });
 
-    window.responsiveChild.sendHeightToParent();
+    window.pym.child.sendHeightToParent();
 }
 
 // initial setup
@@ -142,6 +142,6 @@ if (Modernizr.svg) {
             d.avg_wage = d.avg_wage;
         });
 
-        window.responsiveChild({renderCallback: drawGraphic});
+        window.pym.child({renderCallback: drawGraphic});
     });
 }

@@ -8,7 +8,7 @@
             font: 14px/1.4 Arial, Helvetica, sans-serif;
             color: #333;
         }
-        h3 { 
+        h3 {
             margin: 0 0 1em 0;
             color: #333;
             font-size: 12px;
@@ -24,7 +24,7 @@
             display: block;
             margin-bottom: 2em;
         }
-        #example { 
+        #example {
             margin-bottom: 2em;
         }
     </style>
@@ -42,14 +42,14 @@
 <!-- textarea contents -->
     <textarea readonly="readonly" rows="10" cols="50">
 <div id="example" data-iframe-target="PATH-TO-THIS-FOLDER/child.html"></div>
-<script type="text/javascript" src="PATH-TO-THIS-FOLDER/js/responsiveIframe.js"></script>
-<script>window.responsiveParent();</script>
+<script type="text/javascript" src="PATH-TO-THIS-FOLDER/js/pym.js"></script>
+<script>window.pym.parent('example', {});</script>
     </textarea>
 <!-- end textarea contents -->
 
 
-    <script type="text/javascript" src="../../src/responsiveIframe.js"></script>
-    <script>window.responsiveParent();</script>
+    <script type="text/javascript" src="../../src/pym.js"></script>
+    <script>window.pym.parent('example', {});</script>
 
 </body>
 </html>

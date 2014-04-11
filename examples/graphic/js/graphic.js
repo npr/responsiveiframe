@@ -121,7 +121,8 @@ function drawGraphic(width) {
                 return line(d.value);
             });
 
-   window.responsiveChild.sendHeightToParent();
+    // This is calling an updated height.
+    window.pym.child.sendHeightToParent();
 }
 
 
@@ -134,6 +135,7 @@ if (Modernizr.svg) {
             d.jobs = d.jobs / 1000;
         });
 
-        window.responsiveChild({renderCallback: drawGraphic});
+        // This is instantiating the child message with a callback but AFTER the D3 charts are drawn.
+        window.pym.child({renderCallback: drawGraphic});
     });
 }

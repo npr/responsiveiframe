@@ -1,23 +1,14 @@
 /*
-* This is a responsive iFrame library.
+* Pym.js is library that resizes an iframe based on the width of the parent and the resulting height of the child.
 * Check out the docs at http://foo or the readme at README.md for usage.
 */
 
-window.responsiveParent = function(config) {
+window.pym = {}
+window.pym.parent = function(id, config) {
     /*
     * A global function for setting up a responsive parent.
     * Use the config object to override the default settings.
     */
-
-    // Grab all of the divs which should contain a responsive iframe.
-    // This becomes a list of elements.
-    var elements = document.querySelectorAll('div[data-iframe-target]');
-
-    // Default settings.
-    var settings = { xdomain: '*' };
-
-    // Add any overrides to settings coming from config.
-    for (var key in config) { settings[key] = config[key]; }
 
     var constructIframe = function(el) {
         /*
@@ -65,7 +56,7 @@ window.responsiveParent = function(config) {
         * Process a new message from the child.
         * Used to set the height on our iframe.
         */
-        if (!window.isSafeMessage(e, settings)) { return; }
+        if (!isSafeMessage(e, settings)) { return; }
 
         // Grab the message from the child and parse it.
         var match = e.data.match(/^responsivechild (\S+) (\d+)$/);
@@ -97,7 +88,7 @@ window.responsiveParent = function(config) {
         }
     }
 
-    function sendWidthToChild(el) {
+    var sendWidthToChild = function(el) {
         /*
         * Transmit the current iframe width to the child.
         */
@@ -109,17 +100,23 @@ window.responsiveParent = function(config) {
         el.getElementsByTagName('iframe')[0].contentWindow.postMessage('responsiveparent ' + el.getAttribute('id') + ' ' + width, '*');
     }
 
+    // Default settings.
+    var settings = { xdomain: '*' };
+
+    // Add any overrides to settings coming from config.
+    for (var key in config) { settings[key] = config[key]; }
+
     // Add a listener for processing messages from the child.
     window.addEventListener('message', processChildMessage, false);
 
-    // Loop over the responsive iframe container elements and construct iframes in them.
-    for (var i=0; i<elements.length; i++){
-        constructIframe(elements[i]);
-    }
+    // Construct the iframe in the container element.
+    constructIframe(document.getElementById(id));
+
+    return this;
 
 };
 
-window.isSafeMessage = function(e, settings) {
+var isSafeMessage = function(e, settings) {
     /*
     * Check the message to make sure it comes from an acceptable xdomain.
     * Defaults to '*' but can be overriden in config.
@@ -132,7 +129,7 @@ window.isSafeMessage = function(e, settings) {
     return true;
 }
 
-window.responsiveChild = function(config) {
+window.pym.child = function(config){
     /*
     * A global function for setting up a responsive child.
     * Use the config object to override the default settings.
@@ -145,7 +142,6 @@ window.responsiveChild = function(config) {
         xdomain: '*',
         polling: 0
     };
-    for (var key in config) { settings[key] = config[key]; }
 
     var getParameterByName = function(name) {
         /*
@@ -157,13 +153,26 @@ window.responsiveChild = function(config) {
         return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, " "));
     };
 
+    window.pym.child.sendHeightToParent = function() {
+        /*
+        * Transmit the current iframe height to the parent.
+        * Make this callable from external scripts in case they update the body out of sequence.
+        */
+
+        // Get the child's height.
+        var height = document.getElementsByTagName('body')[0].offsetHeight.toString();
+
+        // Send the height to the parent.
+        window.top.postMessage('responsivechild ' + id + ' '+ height, '*');
+    };
+
     var processParentMessage = function(e) {
         /*
         * Process a new message from parent frame.
         */
 
         // First, punt if this isn't from an acceptable xdomain.
-        if (!window.isSafeMessage(e, settings)) { return; }
+        if (!isSafeMessage(e, settings)) { return; }
 
         // Get the message from the parent.
         var match = e.data.match(/^responsiveparent (\S+) (\d+)$/);
@@ -185,22 +194,12 @@ window.responsiveChild = function(config) {
             if (settings.renderCallback) { settings.renderCallback(width); }
 
             // Send the height back to the parent.
-            window.responsiveChild.sendHeightToParent();
+            window.pym.child.sendHeightToParent();
         }
     };
 
-    window.responsiveChild.sendHeightToParent = function() {
-        /*
-        * Transmit the current iframe height to the parent.
-        * Make this callable from external scripts in case they update the body out of sequence.
-        */
-
-        // Get the child's height.
-        var height = document.getElementsByTagName('body')[0].offsetHeight.toString();
-
-        // Send the height to the parent.
-        window.top.postMessage('responsivechild ' + id + ' '+ height, '*');
-    };
+    // Initialize settings with overrides.
+    for (var key in config) { settings[key] = config[key]; }
 
     // Set up a listener to handle any incoming messages.
     window.addEventListener('message', processParentMessage, false);
@@ -215,11 +214,13 @@ window.responsiveChild = function(config) {
     if (settings.renderCallback) { settings.renderCallback(width); }
 
     // Send the initial height to the parent.
-    window.responsiveChild.sendHeightToParent();
+    window.pym.child.sendHeightToParent();
 
     // If we're configured to poll, create a setInterval to handle that.
     if (settings.polling) {
-        window.setInterval(window.responsiveChild.sendHeightToParent, settings.polling);
+        window.setInterval(window.pym.child.sendHeightToParent, settings.polling);
     }
+
+    return this;
 
 };

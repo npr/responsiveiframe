@@ -121,7 +121,7 @@ function drawGraphic(width) {
                 return line(d.value);
             });
 
-    window.responsiveChild.sendHeightToParent();
+    window.pym.child.sendHeightToParent();
 }
 
 
@@ -134,6 +134,6 @@ if (Modernizr.svg) {
             d.jobs = d.jobs / 1000;
         });
 
-        window.responsiveChild({renderCallback: drawGraphic});
+        window.pym.child({renderCallback: drawGraphic});
     });
 }

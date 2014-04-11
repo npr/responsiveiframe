@@ -44,13 +44,20 @@
     <textarea readonly="readonly" rows="10" cols="50">
 <div id="example-1" data-iframe-target="PATH-TO-THIS-FOLDER/child-1.html"></div>
 <div id="example-2" data-iframe-target="PATH-TO-THIS-FOLDER/child-2.html"></div>
-<script type="text/javascript" src="PATH-TO-THIS-FOLDER/responsiveIframe.js"></script>
-<script>window.responsiveParent();</script>
+<script type="text/javascript" src="PATH-TO-THIS-FOLDER/pym.js"></script>
+<script>
+    window.pym.parent('example-1', {});
+    window.pym.parent('example-2', {});
+</script>
     </textarea>
 <!-- end textarea contents -->
 
-    <script type="text/javascript" src="../../src/responsiveIframe.js"></script>
-    <script>window.responsiveParent();</script>
+    <script type="text/javascript" src="../../src/pym.js"></script>
+    <script>
+        // One call for each container div.
+        window.pym.parent('example-1', {});
+        window.pym.parent('example-2', {});
+    </script>
 
 </body>
 </html>
