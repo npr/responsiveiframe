@@ -32,18 +32,15 @@
 <body>
     <h3>iFrame Preview</h3>
 
-    <div id="example" data-iframe-target="child.html"></div>
+    <div id="example"></div>
 
     <h3>Embed Code</h3>
-    <p class="note">
-        Replace "<strong>PATH-TO-THIS-FOLDER</strong>" with the actual published path to your files
-    </p>
 
 <!-- textarea contents -->
     <textarea readonly="readonly" rows="10" cols="50">
 <div id="example"></div>
-<script type="text/javascript" src="PATH-TO-THIS-FOLDER/js/pym.js"></script>
-<script>var pymParent = pym.Parent('example', 'PATH-TO-THIS-FOLDER/child.html', {});</script>
+<script type="text/javascript" src="js/pym.js"></script>
+<script>var pymParent = pym.Parent('example', 'child.html', {});</script>
     </textarea>
 <!-- end textarea contents -->
 
