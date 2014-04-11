@@ -52,7 +52,7 @@ window.responsiveChild = function(config){
         }
 
         // Parent sent width
-        var match = e.data.match(/^responsive-parent-(\w+)-(\d+)$/);
+        var match = e.data.match(/^responsiveparent (\S+) (\d+)$/);
 
         if (!match || match.length !== 3) {
             // Not the message we're listening for
@@ -78,7 +78,7 @@ window.responsiveChild = function(config){
     */
     window.responsiveChild.sendHeightToParent = function() {
         var height = document.getElementsByTagName('body')[0].offsetHeight.toString();
-        window.top.postMessage('responsive-child-' + id + '-'+ height, '*');
+        window.top.postMessage('responsivechild ' + id + ' '+ height, '*');
     };
 
     window.addEventListener('message', processMessage, false);
@@ -162,7 +162,9 @@ window.responsiveParent = function(config) {
         }
 
         // Child sent height
-        var match = e.data.match(/^responsive-child-(\w+)-(\d+)$/);
+        var match = e.data.match(/^responsivechild (\S+) (\d+)$/);
+
+        console.log(match);
 
         if (!match || match.length !== 3) {
             return false;
@@ -186,7 +188,7 @@ window.responsiveParent = function(config) {
     */
     function sendWidthToChild(el) {
         var width = el.offsetWidth.toString();
-        el.getElementsByTagName('iframe')[0].contentWindow.postMessage('responsive-parent-' + el.getAttribute('id') + '-' + width, '*');
+        el.getElementsByTagName('iframe')[0].contentWindow.postMessage('responsiveparent ' + el.getAttribute('id') + ' ' + width, '*');
     }
 
     window.addEventListener('message', processMessage, false);
