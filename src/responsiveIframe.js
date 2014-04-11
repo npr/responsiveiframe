@@ -11,7 +11,6 @@ window.responsiveChild = function(config){
      * Setup this document as a responsive iframe child.
      */
     this.setup = function() {
-        console.log(config);
         for (var key in config) {
             settings[key] = config[key];
         }
@@ -81,8 +80,6 @@ window.responsiveChild = function(config){
         settings['id'] = match[1];
         var width = parseInt(match[2]);
 
-        console.log(width, parentWidth);
-
         if (width != parentWidth) {
             parentWidth = width;
 
@@ -131,8 +128,16 @@ window.responsiveParent = function(config) {
 
         var node = document.createElement("iframe");
 
+        var url = settings.src;
+
+        if (url.indexOf('?') < 0) {
+            url += '?';
+        } else {
+            url += '&';
+        }
+
         // Send the initial width as a querystring parameter.
-        node.src = settings.src + '?initialWidth=' + width + '&childId=' + settings['id'];
+        node.src = url + 'initialWidth=' + width + '&childId=' + settings['id'];
 
         // Super not-dry way to set attrs on our iFrame.
         node.setAttribute('width', '100%');
