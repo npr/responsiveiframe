@@ -1,43 +1,18 @@
 window.responsiveChild = function(config){
     var parentWidth;
+    var id;
     var settings = {
         renderCallback: null,
         id:null,
         xdomain: '*',
         polling: 0
     };
+    for (var key in config) { settings[key] = config[key]; }
 
     /*
-     * Setup this document as a responsive iframe child.
-     */
-    this.setup = function() {
-        console.log(config);
-        for (var key in config) {
-            settings[key] = config[key];
-        }
-
-        window.addEventListener('message', processMessage, false);
-
-        settings['id'] = getParameterByName('childId');
-
-        // Initial width is sent as querystring parameter
-        var width = parseInt(getParameterByName('initialWidth'));
-
-        if (settings.renderCallback) {
-            settings.renderCallback(width);
-        }
-
-        this.sendHeightToParent();
-
-        if (settings.polling) {
-            window.setInterval(sendHeightToParent, settings.polling);
-        }
-    };
-
-    /*
-     * Extract a querystring parameter from the URL.
-     */
-    this.getParameterByName = function(name) {
+    * Extract a querystring parameter from the URL.
+    */
+    var getParameterByName = function(name) {
         name = name.replace(/[\[]/, '\\\[').replace(/[\]]/, '\\\]');
 
         var regex = new RegExp("[\\?&]" + name + '=([^&#]*)');
@@ -47,9 +22,9 @@ window.responsiveChild = function(config){
     };
 
     /*
-     * Verify that the message came from a trustworthy domaine
-     */
-    this.isSafeMessage = function(e) {
+    * Verify that the message came from a trustworthy domaine
+    */
+    var isSafeMessage = function(e) {
         if (settings.xdomain !== '*') {
             var regex = new RegExp(settings.xdomain + '$');
 
@@ -63,9 +38,9 @@ window.responsiveChild = function(config){
     };
 
     /*
-     * Process a new message from parent frame.
-     */
-    this.processMessage = function(e) {
+    * Process a new message from parent frame.
+    */
+    var processMessage = function(e) {
         if (!isSafeMessage(e)) {
             return;
         }
@@ -78,10 +53,8 @@ window.responsiveChild = function(config){
             return;
         }
 
-        settings['id'] = match[1];
+        id = match[1];
         var width = parseInt(match[2]);
-
-        console.log(width, parentWidth);
 
         if (width != parentWidth) {
             parentWidth = width;
@@ -90,49 +63,60 @@ window.responsiveChild = function(config){
                 settings.renderCallback(width);
             }
 
-            this.sendHeightToParent();
+            sendHeightToParent();
         }
     };
 
     /*
-     * Transmit the current iframe height to the parent.
-     */
-    this.sendHeightToParent = function() {
+    * Transmit the current iframe height to the parent.
+    */
+    var sendHeightToParent = function() {
         var height = document.getElementsByTagName('body')[0].offsetHeight.toString();
-        window.top.postMessage('responsive-child-' + settings['id'] + '-'+ height, '*');
+        window.top.postMessage('responsive-child-' + id + '-'+ height, '*');
     };
 
-    return this;
+    window.addEventListener('message', processMessage, false);
+
+    id = getParameterByName('childId');
+
+    // Initial width is sent as querystring parameter
+    var width = parseInt(getParameterByName('initialWidth'));
+
+    if (settings.renderCallback) {
+        settings.renderCallback(width);
+    }
+
+    sendHeightToParent();
+
+    if (settings.polling) {
+        window.setInterval(sendHeightToParent, settings.polling);
+    }
+
 }
 
 window.responsiveParent = function(config) {
-    // Basic settings we'll need later.
-    var el;
-    var settings = {
-        src: null,
-        id: null,
-        xdomain: '*'
-    };
+    var elements = document.querySelectorAll('div[data-iframe-target]');
+    var settings = { xdomain: '*' };
 
-    this.setup = function(){
+    for (var key in config) { settings[key] = config[key]; }
 
-        // Our settings.
-        for (var key in config) {
-            settings[key] = config[key];
-        }
-
-        window.addEventListener('message', processMessage, false);
-
-        // Get the div that will contain our iframe.
-        el = document.getElementById(settings['id']);
-
-        // Calculate it's width.
+    var constructIframe = function(el) {
+        // Calculate its width.
         var width = el.offsetWidth.toString();
 
         var node = document.createElement("iframe");
 
+        var url = el.getAttribute('data-iframe-target');
+        var id = el.getAttribute('id');
+
+        if (url.indexOf('?') < 0) {
+            url += '?';
+        } else {
+            url += '&';
+        }
+
         // Send the initial width as a querystring parameter.
-        node.src = settings.src + '?initialWidth=' + width + '&childId=' + settings['id'];
+        node.src = url + 'initialWidth=' + width + '&childId=' + id;
 
         // Super not-dry way to set attrs on our iFrame.
         node.setAttribute('width', '100%');
@@ -145,13 +129,12 @@ window.responsiveParent = function(config) {
         window.addEventListener('resize', function(e) {
             sendWidthToChild(el);
         });
-
-    };
+    }
 
     /*
-     * Verify that the message came from a trustworthy domain.
-     */
-    this.isSafeMessage = function(e) {
+    * Verify that the message came from a trustworthy domain.
+    */
+    var isSafeMessage = function(e) {
         if (settings.xdomain !== '*') {
             var regex = new RegExp(settings.xdomain + '$');
 
@@ -165,10 +148,10 @@ window.responsiveParent = function(config) {
     }
 
     /*
-     * Process a new message from a child iframe.
-     */
-    this.processMessage = function(e) {
-        if (!this.isSafeMessage(e)) {
+    * Process a new message from a child iframe.
+    */
+    var processMessage = function(e) {
+        if (!isSafeMessage(e)) {
             return;
         }
 
@@ -182,19 +165,28 @@ window.responsiveParent = function(config) {
         var childId = match[1];
         var height = parseInt(match[2]);
 
-        if (el.getAttribute('id') == childId) {
-            el.getElementsByTagName('iframe')[0].setAttribute('height', height + 'px');
+        elements = document.querySelectorAll('div[data-iframe-target]');
+
+        for (var i=0; i<elements.length; i++){
+            el = elements[i];
+            if (el.getAttribute('id') == childId) {
+                el.getElementsByTagName('iframe')[0].setAttribute('height', height + 'px');
+            }
         }
     }
 
     /*
-     * Transmit the current iframe width to the child.
-     */
+    * Transmit the current iframe width to the child.
+    */
     function sendWidthToChild(el) {
-
         var width = el.offsetWidth.toString();
-        el.getElementsByTagName('iframe')[0].contentWindow.postMessage('responsive-parent-' + settings['id'] + '-' + width, '*');
+        el.getElementsByTagName('iframe')[0].contentWindow.postMessage('responsive-parent-' + el.getAttribute('id') + '-' + width, '*');
     }
 
-    return this;
+    window.addEventListener('message', processMessage, false);
+
+    for (var i=0; i<elements.length; i++){
+        constructIframe(elements[i]);
+    }
+
 };
