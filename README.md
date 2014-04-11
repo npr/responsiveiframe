@@ -109,12 +109,11 @@ window.responsiveChild();
 
 ## How it works
 
-The `parent.js` library and a small bit of javascript are injected onto the parent page. This
-code writes an iframe to the page in a container of your choice. The request for the iframe's contents includes querystring parameters for the `initialWidth` and `childId` of the child page. The `initialWidth` allows the child to know its size immediately on load. (In iOS the child frame can not determine its own width accurately.) The `childId` allows multiple children to be embedded on the same page, each with its own communication to the parent.
+The Pym.js library and a small bit of javascript are injected onto the parent page. This code writes an iframe to the page in a container of your choice. The request for the iframe's contents includes querystring parameters for the initialWidth and childId of the child page. The initialWidth allows the child to know its size immediately on load, because in iOS, the child frame can not determine its own width accurately. The childId allows multiple children to be embedded on the same page, each with its own communication to the parent.
 
-The child page includes `child.js` and its own javascript. It invokes the `setupResponsiveIframe` function, which initializes cross-iframe communication to the parent, renders the any dynamic contents and then sends the computed height of the child to the parent via [postMessage](https://developer.mozilla.org/en-US/docs/Web/API/Window.postMessage). Upon receiving this message the parent resizes the containing iframe, thus ensuring the contents of the child are always visible.
+The child page also includes Pym.js and its own javascript. It initializes cross-iframe communication to the parent, renders any dynamic content and then sends the computed height of the child to the parent via postMessage. Upon receiving this message the parent resizes the containing iframe, thus ensuring the contents of the child are always visible.
 
-The parent page also registers for resize events. Any time one is received, the parent sends the new container width to each child via `postMessage`. The child rerenders its content and sends back the new height.
+The parent page also registers for resize events. Any time one is received, the parent sends the new container width to each child via postMessage. The child re-renders its content and sends back the new height.
 
 
 ## Credits
