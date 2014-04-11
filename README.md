@@ -73,7 +73,7 @@ window.responsiveChild({renderCallback: drawGraphic});
 
 If you have dynamic content and need finer control over resize events, you can invoke `sendHeightToParent()` in the child window at any time to force the iframe to update its size.
 
-[For example, say you have a quiz](example/quiz/), and the content of the page changes when someone selects and answer, affecting the page's height:
+[For example, say you have a quiz](example/quiz/), and the content of the page changes when someone selects an answer, affecting the page's height:
 
 ```
 function check_answer(e) {
@@ -86,11 +86,11 @@ window.responsiveChild();
 
 ## Assumptions / requirements
 
-* If you're pasting the iframe embed code into a CMS or blogging software, make sure that it allows you to embed HTML and JavaScript. Some CMSes (such as WordPress) may strip it out.
+If you're pasting the iframe embed code into a CMS or blogging software, make sure that it allows you to embed HTML and JavaScript. Some CMSes (such as WordPress) may strip it out.
 
-* The parent and child pages do not necessarily need to be on the same domain. (You can restrict this with xdomain.)
+The parent and child pages do not necessarily need to be on the same domain. (You can restrict this with xdomain.)
 
-* The responsive iframe library can stand alone and does not require jQuery. (Some of the examples use jQuery for unrelated features.)
+The responsive iframe library can stand alone and does not require jQuery. (Some of the examples use jQuery for unrelated features.)
 
 ### Browsers
 
