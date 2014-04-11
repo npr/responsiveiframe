@@ -7,7 +7,6 @@ $(document).ready(function() {
     var mobile_threshold = 500;
     
     function drawGraphic(width) {
-
         var margin = {top: 10, right: 15, bottom: 25, left: 50};
         var width = width - margin.left - margin.right;
         var height = Math.ceil((width * graphic_aspect_height) / graphic_aspect_width) - margin.top - margin.bottom;
@@ -130,8 +129,6 @@ $(document).ready(function() {
                 .attr('d', function(d) {
                     return line(d.value);
                 });
-        
-        sendHeightToParent();
     }
     
     // initial setup
@@ -144,10 +141,7 @@ $(document).ready(function() {
                 d.avg_wage = d.avg_wage;
             });
 
-            var v = window.responsiveChild({
-                renderCallback: drawGraphic 
-            });
-            v.setup();
+            window.responsiveChild({renderCallback: drawGraphic});
         });
     }
 });

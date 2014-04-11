@@ -8,75 +8,50 @@
             font: 14px/1.4 Arial, Helvetica, sans-serif;
             color: #333;
         }
-        h3 { margin: 0 0 1em 0; }
+        h3 { 
+            margin: 0 0 1em 0;
+            color: #333;
+            font-size: 12px;
+            background-color: #eee;
+            padding: 5px 10px;
+        }
         p { margin: 0 0 1em 0; }
         p.note {
-            margin-top: -1em;
-            font-size: 90%;
+            font-size: 12px;
             color: #666;
-            font-style: italic;
         }
         textarea {
             display: block;
             margin-bottom: 2em;
         }
-        .example { border: 1px solid #eee; }
-        #example-2 { margin-bottom: 2em; }
+        #example-2 { 
+            margin-bottom: 2em;
+        }
     </style>
 </head>
 <body>
     <h3>iFrame Preview</h3>
-    <p class="note">(Border shown for preview purposes.)</p>
 
-    <div class="example" id="example-1"></div>
-    <div class="example" id="example-2"></div>
+    <div id="example-1" data-iframe-target="child-1.html"></div>
+    <div id="example-2" data-iframe-target="child-2.html"></div>
 
 
     <h3>Embed Code</h3>
+    <p class="note">
+        Replace "<strong>PATH-TO-THIS-FOLDER</strong>" with the actual published path to your files
+    </p>
 
 <!-- textarea contents -->
     <textarea readonly="readonly" rows="10" cols="50">
-<div id="example-1"></div>
-<script src="PATH-TO-THIS-FOLDER/js/lib/parent.js" type="text/javascript"></script>
-<script type="text/javascript">
-$(function() {
-    $('#example-1').responsiveIframe({
-        src: 'PATH-TO-THIS-FOLDER/child-1.html'
-    });
-});
-</script>
-
-<div id="example-2"></div>
-<script src="PATH-TO-THIS-FOLDER/js/lib/parent.js" type="text/javascript"></script>
-<script type="text/javascript">
-$(function() {
-    $('#example-2').responsiveIframe({
-        src: 'PATH-TO-THIS-FOLDER/child-2.html'
-    });
-});
-</script>
-
+<div id="example-1" data-iframe-target="PATH-TO-THIS-FOLDER/child-1.html"></div>
+<div id="example-2" data-iframe-target="PATH-TO-THIS-FOLDER/child-2.html"></div>
+<script type="text/javascript" src="PATH-TO-THIS-FOLDER/responsiveIframe.js"></script>
+<script>window.responsiveParent();</script>
     </textarea>
 <!-- end textarea contents -->
 
-    <p class="note">
-        Notes: Publish out your project, then replace:<br />
-        - "<strong>PATH-TO-THIS-FOLDER</strong>" with the actual published path to your files<br />
-        - "<strong>example-graphic</strong>" with a div name that's more descriptive of your project (if you have multiple responsive iframes, each needs a unique div ID
-    </p>
-
-    <script type="text/javascript" src="js/lib/responsiveIframe.js"></script>
-    <script type="text/javascript">
-        var responsiveIds = ['example'];
-        for (var i = 0; i < responsiveIds.length; i++) {
-            var config = {
-                src: 'child.html',
-                id: responsiveIds[i]
-            }
-            var m = window.responsiveParent(config)
-            m.setup();
-        }
-    </script>
+    <script type="text/javascript" src="../../src/responsiveIframe.js"></script>
+    <script>window.responsiveParent();</script>
 
 </body>
 </html>

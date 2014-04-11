@@ -1,4 +1,4 @@
-var $graphic;
+var $graphic = $('#graphic');
 var graphic_data_url = 'data.csv';
 var graphic_data;
 var graphic_aspect_width = 16;
@@ -124,7 +124,6 @@ function drawGraphic(width) {
 //    window.responsiveChild.sendHeightToParent();
 }
 
-$graphic = $('#graphic');
 
 if (Modernizr.svg) {
     d3.csv(graphic_data_url, function(error, data) {
@@ -138,4 +137,3 @@ if (Modernizr.svg) {
         window.responsiveChild({renderCallback: drawGraphic});
     });
 }
-
