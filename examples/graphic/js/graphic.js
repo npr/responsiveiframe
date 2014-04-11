@@ -22,7 +22,7 @@ function drawGraphic(width) {
 
     var y = d3.scale.linear()
         .range([height, 0]);
-    
+
     var formatAsPercentage = d3.formatPrefix('%',0);
 
     var xAxis = d3.svg.axis()
@@ -37,60 +37,60 @@ function drawGraphic(width) {
                 return fmt(d);
             }
         });
-        
+
     var x_axis_grid = function() { return xAxis; }
 
     var yAxis = d3.svg.axis()
         .scale(y)
         .orient('left')
         .ticks(num_ticks);
-    
+
     var y_axis_grid = function() { return yAxis; }
-    
+
     var line = d3.svg.line()
         .x(function(d) { return x(d.date); })
         .y(function(d) { return y(d.amt); });
-    
+
     // parse data into columns
     var lines = {};
     for (var column in graphic_data[0]) {
         if (column == 'date') continue;
         lines[column] = graphic_data.map(function(d) {
-            return { 
-                'date': d.date, 
+            return {
+                'date': d.date,
                 'amt': d[column]
             };
         });
     }
-   
+
     var svg = d3.select('#graphic').append('svg')
         .attr("width", width + margin.left + margin.right)
         .attr("height", height + margin.top + margin.bottom)
         .append("g")
         .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-    
+
     x.domain(d3.extent(graphic_data, function(d) { return d.date; }));
 
     y.domain([
-        d3.min(d3.entries(lines), function(c) { 
-            return d3.min(c.value, function(v) { 
+        d3.min(d3.entries(lines), function(c) {
+            return d3.min(c.value, function(v) {
                 var n = v.amt;
                 return Math.floor(n);
-            }); 
+            });
         }),
-        d3.max(d3.entries(lines), function(c) { 
-            return d3.max(c.value, function(v) { 
+        d3.max(d3.entries(lines), function(c) {
+            return d3.max(c.value, function(v) {
                 var n = v.amt;
                 return Math.ceil(n);
-            }); 
+            });
         })
     ]);
-    
+
     svg.append('g')
         .attr('class', 'x axis')
         .attr('transform', 'translate(0,' + height + ')')
         .call(xAxis);
-    
+
     svg.append('g')
         .attr('class', 'y axis')
         .call(yAxis);
@@ -120,8 +120,8 @@ function drawGraphic(width) {
             .attr('d', function(d) {
                 return line(d.value);
             });
-    
-//    window.responsiveChild.sendHeightToParent();
+
+   window.responsiveChild.sendHeightToParent();
 }
 
 
@@ -133,7 +133,7 @@ if (Modernizr.svg) {
             d.date = d3.time.format('%Y-%m').parse(d.date);
             d.jobs = d.jobs / 1000;
         });
-        
+
         window.responsiveChild({renderCallback: drawGraphic});
     });
 }
