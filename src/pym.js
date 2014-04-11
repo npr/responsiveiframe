@@ -4,6 +4,18 @@
 */
 
 window.pym = {}
+window.pym._isSafeMessage = function(e, settings) {
+    /*
+    * Check the message to make sure it comes from an acceptable xdomain.
+    * Defaults to '*' but can be overriden in config.
+    */
+    if (settings.xdomain !== '*') {
+        // If origin doesn't match our xdomain, return.
+        if (!e.origin.match(new RegExp(settings.xdomain + '$'))) { return; }
+    }
+
+    return true;
+}
 window.pym.parent = function(id, config) {
     /*
     * A global function for setting up a responsive parent.
@@ -56,7 +68,7 @@ window.pym.parent = function(id, config) {
         * Process a new message from the child.
         * Used to set the height on our iframe.
         */
-        if (!isSafeMessage(e, settings)) { return; }
+        if (!window.pym._isSafeMessage(e, settings)) { return; }
 
         // Grab the message from the child and parse it.
         var match = e.data.match(/^responsivechild (\S+) (\d+)$/);
@@ -116,19 +128,6 @@ window.pym.parent = function(id, config) {
 
 };
 
-var isSafeMessage = function(e, settings) {
-    /*
-    * Check the message to make sure it comes from an acceptable xdomain.
-    * Defaults to '*' but can be overriden in config.
-    */
-    if (settings.xdomain !== '*') {
-        // If origin doesn't match our xdomain, return.
-        if (!e.origin.match(new RegExp(settings.xdomain + '$'))) { return; }
-    }
-
-    return true;
-}
-
 window.pym.child = function(config){
     /*
     * A global function for setting up a responsive child.
@@ -172,7 +171,7 @@ window.pym.child = function(config){
         */
 
         // First, punt if this isn't from an acceptable xdomain.
-        if (!isSafeMessage(e, settings)) { return; }
+        if (!window.pym._isSafeMessage(e, settings)) { return; }
 
         // Get the message from the parent.
         var match = e.data.match(/^responsiveparent (\S+) (\d+)$/);
