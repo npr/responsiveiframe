@@ -128,6 +128,7 @@ function drawGraphic(width) {
             .attr('d', function(d) {
                 return line(d.value);
             });
+
     window.responsiveChild.sendHeightToParent();
 }
 
