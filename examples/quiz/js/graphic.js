@@ -1,3 +1,5 @@
+var pymChild = null;
+
 function check_answer(e) {
     var $picked = $(e.target);
     var $question = $picked.parents('.question');
@@ -9,9 +11,9 @@ function check_answer(e) {
         $(this).unbind('click');
     });
 
-    window.pym.child.sendHeightToParent();
+    pymChild.sendHeightToParent();
 }
 
 $('.question').find('li').on('click', check_answer);
 
-window.pym.child();
+pymChild = window.pym.child();

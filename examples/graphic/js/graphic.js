@@ -4,6 +4,7 @@ var graphic_data;
 var graphic_aspect_width = 16;
 var graphic_aspect_height = 9;
 var mobile_threshold = 500;
+var pymChild = null;
 
 function drawGraphic(width) {
     var margin = {top: 10, right: 15, bottom: 25, left: 35};
@@ -122,7 +123,9 @@ function drawGraphic(width) {
             });
 
     // This is calling an updated height.
-    window.pym.child.sendHeightToParent();
+    if (pymChild) {
+        pymChild.sendHeightToParent();
+    }
 }
 
 
@@ -136,6 +139,6 @@ if (Modernizr.svg) {
         });
 
         // This is instantiating the child message with a callback but AFTER the D3 charts are drawn.
-        window.pym.child({renderCallback: drawGraphic});
+        pymChild = new pym.Child({ renderCallback: drawGraphic });
     });
 }
