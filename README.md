@@ -6,7 +6,7 @@ Using iframes in a responsive page can be tricky. It&rsquo;s easy enough to make
 
 Use case: The NPR Visuals team uses Pym.js to embed small custom bits of code (charts, maps, etc.) inside our CMS without CSS or JavaScript conflicts. [See an example of this in action.](http://www.npr.org/2014/03/25/293870089/maze-of-college-costs-and-aid-programs-trap-some-families)
 
-### [Read the Documentation](http://blog.apps.npr.org/responsiveiframe/)
+### [Read the Documentation](http://blog.apps.npr.org/pym.js/)
 
 Released under the MIT open source license. See `LICENSE` for details.
 
