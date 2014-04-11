@@ -16,4 +16,4 @@ function check_answer(e) {
 
 $('.question').find('li').on('click', check_answer);
 
-pymChild = window.pym.child();
+pymChild = new pym.Child();

@@ -137,6 +137,6 @@ if (Modernizr.svg) {
             d.jobs = d.jobs / 1000;
         });
 
-        pymChild = pym.Child({ renderCallback: drawGraphic });
+        pymChild = new pym.Child({ renderCallback: drawGraphic });
     });
 }
