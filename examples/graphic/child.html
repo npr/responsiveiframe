@@ -12,6 +12,8 @@
 
     <style type="text/css">
         /* base styles */
+        html { -webkit-text-size-adjust: none; /* prevent font scaling in landscape */ }
+
         body {
             margin: 0;
             padding: 0;
@@ -61,6 +63,11 @@
             display: table; /* 2 */
         }
         #graphic:after { clear: both; }
+        
+        #graphic img {
+            max-width: 100%;
+            height: auto;
+        }
         
         #graphic svg {
             font-family: Arial, Helvetica, sans-serif;
@@ -159,7 +166,7 @@
     <script src="js/lib/jquery.js" type="text/javascript"></script>
     <script src="js/lib/d3.v3.min.js" type="text/javascript"></script>
     <script src="js/lib/modernizr.svg.min.js" type="text/javascript"></script>
-    <script src="js/lib/child.js" type="text/javascript"></script>
+    <script src="js/lib/responsiveIframe.js" type="text/javascript"></script>
     <script src="js/graphic.js" type="text/javascript"></script>
 </body>
 </html>
