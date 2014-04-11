@@ -36,7 +36,8 @@
 
             $dimensions.text(boxWidth + 'x' + boxHeight);
         }
-        window.pym.child({renderCallback: drawBox});
+        
+        var pymChild = new pym.Child({ renderCallback: drawBox });
     </script>
 </body>
 </html>
