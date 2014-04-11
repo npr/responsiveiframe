@@ -1,8 +1,7 @@
 # responsiveiframe
 
-A simplified NPR Visuals fork of [NPR Tech's responsiveiframe](http://npr.github.com/responsiveiframe/). Requires jQuery on both the parent and child pages.
+A simplified NPR Visuals fork of [NPR Tech's responsiveiframe](http://npr.github.com/responsiveiframe/). Released under the MIT open source license. See `LICENSE` for details.
 
-Released under the MIT open source license. See `LICENSE` for details.
 
 ## What is it?
 
@@ -11,6 +10,7 @@ A library that allows iframes to be embedded in a way that allows them to resize
 The typical use-case for this is embedding small custom bits of code (charts, maps, etc.) inside a CMS without override CSS or JavaScript conflicts.
 
 See an example of this in action on [NPR.org](http://www.npr.org/2014/03/25/293870089/maze-of-college-costs-and-aid-programs-trap-some-families).
+
 
 ## Examples
 
@@ -22,6 +22,29 @@ Make your browser window wider or narrower to see test responsiveness in these e
 * [D3 line graph](examples/graphic/)
 * [Quiz](examples/quiz/)
 * [Multiple D3 line graphs](examples/multiple/)
+
+
+## Assumptions / requirements
+
+If you're pasting the iframe embed code into a CMS or blogging software, make sure that it allows you to embed HTML and JavaScript. Some CMSes (such as WordPress) may strip it out.
+
+The parent and child pages do not necessarily need to be on the same domain. (You can restrict this with xdomain.)
+
+The responsive iframe library can stand alone and does not require jQuery. (Some of the examples use jQuery for unrelated features.)
+
+### Browsers
+
+This has been tested in:
+
+* Internet Explorer 9 and 10 (Windows 7)
+* Chrome 32 (Mac 10.9)
+* Firefox 26 (Mac 10.9)
+* Safari 7 (Mac 10.9)
+* iOS 7 Safari
+* Android 4.4 Chrome
+
+Internet Explorer versions earlier than **9** are not supported.
+
 
 ## Usage
 
@@ -83,28 +106,6 @@ function check_answer(e) {
 $('.question').find('li').on('click', check_answer);
 window.responsiveChild();
 ```
-
-## Assumptions / requirements
-
-If you're pasting the iframe embed code into a CMS or blogging software, make sure that it allows you to embed HTML and JavaScript. Some CMSes (such as WordPress) may strip it out.
-
-The parent and child pages do not necessarily need to be on the same domain. (You can restrict this with xdomain.)
-
-The responsive iframe library can stand alone and does not require jQuery. (Some of the examples use jQuery for unrelated features.)
-
-### Browsers
-
-This has been tested in:
-
-* Internet Explorer 9 and 10 (Windows 7)
-* Chrome 32 (Mac 10.9)
-* Firefox 26 (Mac 10.9)
-* Safari 7 (Mac 10.9)
-* iOS 7 Safari
-* Android 4.4 Chrome
-
-Internet Explorer versions earlier than **9** are not supported.
-
 
 ## How it works
 
