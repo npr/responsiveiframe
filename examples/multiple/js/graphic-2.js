@@ -4,6 +4,7 @@ var graphic_data;
 var graphic_aspect_width = 16;
 var graphic_aspect_height = 9;
 var mobile_threshold = 500;
+var pymChild = null;
 
 function drawGraphic(width) {
     var margin = {top: 10, right: 15, bottom: 25, left: 50};
@@ -129,7 +130,9 @@ function drawGraphic(width) {
                 return line(d.value);
             });
 
-    window.pym.child.sendHeightToParent();
+    if (pymChild) {
+        pymChild.sendHeightToParent();
+    }
 }
 
 // initial setup
@@ -142,6 +145,6 @@ if (Modernizr.svg) {
             d.avg_wage = d.avg_wage;
         });
 
-        window.pym.child({renderCallback: drawGraphic});
+        var pymChild = new pym.Child({renderCallback: drawGraphic});
     });
 }

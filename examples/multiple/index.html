@@ -46,8 +46,9 @@
 <div id="example-2" data-iframe-target="PATH-TO-THIS-FOLDER/child-2.html"></div>
 <script type="text/javascript" src="PATH-TO-THIS-FOLDER/pym.js"></script>
 <script>
-    window.pym.parent('example-1', {});
-    window.pym.parent('example-2', {});
+    // One call for each container div.
+    var pymParent = pym.Parent('example-1', {});
+    var another = pym.Parent('example-2', {});
 </script>
     </textarea>
 <!-- end textarea contents -->
@@ -55,8 +56,8 @@
     <script type="text/javascript" src="../../src/pym.js"></script>
     <script>
         // One call for each container div.
-        window.pym.parent('example-1', {});
-        window.pym.parent('example-2', {});
+        var pymParent = pym.Parent('example-1', {});
+        var another = pym.Parent('example-2', {});
     </script>
 
 </body>
