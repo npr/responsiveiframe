@@ -19,42 +19,40 @@ var pym = (function() {
         return true;
     }
 
-    lib.Parent = function(id, config) {
+    lib.Parent = function(id, url, config) {
         /*
         * A global function for setting up a responsive parent.
         * Use the config object to override the default settings.
         */
+        this.id = id;
+        this.url = url;
+        this.el = document.getElementById(id);
+
         this.settings = {
             xdomain: '*'
         };
 
-        this.constructIframe = function(el) {
+        this.constructIframe = function() {
             /*
             * A function which handles constructing an iframe inside a given element.
             */
 
             // Calculate the width of this element.
-            var width = el.offsetWidth.toString();
+            var width = this.el.offsetWidth.toString();
 
             // Create an iframe element attached to the document.
             var node = document.createElement("iframe");
 
-            // Get the URL to the child page from the element's data-iframe-target attribute.
-            var url = el.getAttribute('data-iframe-target');
-
-            // Get the ID of the element to enable messages to this specific iframe child.
-            var id = el.getAttribute('id');
-
             // If the URL contains querystring bits, use them.
             // Otherwise, just create a set of valid params.
-            if (url.indexOf('?') < 0) {
-                url += '?';
+            if (this.url.indexOf('?') < 0) {
+                this.url += '?';
             } else {
-                url += '&';
+                this.url += '&';
             }
 
             // Append the initial width as a querystring parameter.
-            node.src = url + 'initialWidth=' + width + '&childId=' + id;
+            node.src = this.url + 'initialWidth=' + width + '&childId=' + this.id;
 
             // Set some attributes to this proto-iframe.
             node.setAttribute('width', '100%');
@@ -63,10 +61,13 @@ var pym = (function() {
             node.setAttribute('frameborder', '0');
 
             // Append the iframe to our element.
-            el.appendChild(node);
+            this.el.appendChild(node);
 
             // Add an event listener that will handle redrawing the child on resize.
-            window.addEventListener('resize', function(e) { sendWidthToChild(el); });
+            var that = this;
+            window.addEventListener('resize', function(e) {
+                that.sendWidthToChild();
+            });
         }
 
         this.processChildMessage = function(e) {
@@ -80,46 +81,41 @@ var pym = (function() {
             var match = e.data.match(/^responsivechild (\S+) (\d+)$/);
 
             // If there's no match or too many matches in the message, punt.
-            if (!match || match.length !== 3) { return false; }
+            if (!match || match.length !== 3) {
+                return false;
+            }
 
             // Get the ID from the message.
             var childId = match[1];
 
+            // Is this message for me?
+            if (childId != this.id) {
+                return;
+            }
+
             // Get the child's height from the message.
             var height = parseInt(match[2]);
 
-            // Get a list of all of the responsive iframe containers on the page.
-            elements = document.querySelectorAll('div[data-iframe-target]');
-
-            // Loop over the containers.
-            for (var i=0; i<elements.length; i++){
-
-                // Get this container's element.
-                el = elements[i];
-
-                // See if this container is the one from the message.
-                if (el.getAttribute('id') == childId) {
-
-                    // If so, update the height.
-                    el.getElementsByTagName('iframe')[0].setAttribute('height', height + 'px');
-                }
-            }
+            // Update the height.
+            this.el.getElementsByTagName('iframe')[0].setAttribute('height', height + 'px');
         }
 
-        var sendWidthToChild = function(el) {
+        this.sendWidthToChild = function() {
             /*
             * Transmit the current iframe width to the child.
             */
 
             // Get the width of the element.
-            var width = el.offsetWidth.toString();
+            var width = this.el.offsetWidth.toString();
 
             // Pass the width out to the child so it can compute the height.
-            el.getElementsByTagName('iframe')[0].contentWindow.postMessage('responsiveparent ' + el.getAttribute('id') + ' ' + width, '*');
+            this.el.getElementsByTagName('iframe')[0].contentWindow.postMessage('responsiveparent ' + this.id + ' ' + width, '*');
         }
 
         // Add any overrides to settings coming from config.
-        for (var key in config) { this.settings[key] = config[key]; }
+        for (var key in config) {
+            this.settings[key] = config[key];
+        }
 
         // Add a listener for processing messages from the child.
         var that = this;
@@ -128,10 +124,9 @@ var pym = (function() {
         }, false);
 
         // Construct the iframe in the container element.
-        this.constructIframe(document.getElementById(id));
+        this.constructIframe();
 
         return this;
-
     };
 
     lib.Child = function(config) {
