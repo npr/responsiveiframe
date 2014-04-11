@@ -13,8 +13,7 @@
     <p>dhkjgsdkjhgfasdkhjgdfsakjhgsadfkjhdfsgdfgks</p>
     <!-- Put one of these wherever you want a chart -->
     <!-- ID should be unique -->
-    <!-- data-iframe-target should point to your iframe child -->
-    <div id="example" data-iframe-target="child.html"></div>
+    <div id="example"></div>
     <p>dhkjgsdkjhgfasdkhjgdfsakjhgsadfkjhdfsgdfgks</p>
     <p>dhkjgsdkjhgfasdkhjgdfsakjhgsadfkjhdfsgdfgks</p>
     <p>dhkjgsdkjhgfasdkhjgdfsakjhgsadfkjhdfsgdfgks</p>
@@ -23,8 +22,7 @@
     <p>dhkjgsdkjhgfasdkhjgdfsakjhgsadfkjhdfsgdfgks</p>
     <!-- Put one of these wherever you want a chart -->
     <!-- ID should be unique -->
-    <!-- data-iframe-target should point to your iframe child -->
-    <div id="example2" data-iframe-target="child.html"></div>
+    <div id="example2"></div>
     <p>dhkjgsdkjhgfasdkhjgdfsakjhgsadfkjhdfsgdfgks</p>
     <p>dhkjgsdkjhgfasdkhjgdfsakjhgsadfkjhdfsgdfgks</p>
     <p>dhkjgsdkjhgfasdkhjgdfsakjhgsadfkjhdfsgdfgks</p>
@@ -34,8 +32,7 @@
     <p>dhkjgsdkjhgfasdkhjgdfsakjhgsadfkjhdfsgdfgks</p>
     <!-- Put one of these wherever you want a chart -->
     <!-- ID should be unique -->
-    <!-- data-iframe-target should point to your iframe child -->
-    <div id="example3" data-iframe-target="child.html"></div>
+    <div id="example3"></div>
     <p>dhkjgsdkjhgfasdkhjgdfsakjhgsadfkjhdfsgdfgks</p>
     <p>dhkjgsdkjhgfasdkhjgdfsakjhgsadfkjhdfsgdfgks</p>
     <p>dhkjgsdkjhgfasdkhjgdfsakjhgsadfkjhdfsgdfgks</p>
@@ -47,11 +44,9 @@
     <!-- Put this at the bottom -->
     <script type="text/javascript" src="../../src/pym.js"></script>
     <script>
-        var pymParent = new pym.Parent('example', {});
-        var another = new pym.Parent('example2', {});
-        var third = new window.pym.Parent('example3', {});
+        var pymParent = new pym.Parent('example', 'child.html', {});
+        var another = new pym.Parent('example2', 'child.html', {});
+        var third = new window.pym.Parent('example3', 'child.html', {});
     </script>
-
-
 </body>
 </html>
