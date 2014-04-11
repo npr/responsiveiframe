@@ -5,7 +5,7 @@
 
 var pym = (function() {
     var lib = {};
-    
+
     var _isSafeMessage = function(e, settings) {
         /*
         * Check the message to make sure it comes from an acceptable xdomain.
