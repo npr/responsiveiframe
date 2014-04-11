@@ -28,8 +28,8 @@ Make your browser window wider or narrower to see test responsiveness in these e
 ### On the parent page
 
 * Name your containing div with a unique ID name, and include a `data-iframe-target` attribute with the path to your `child.html` file.
-* Include `responsiveIframe.js`.
-* Call `$('div').responsiveIframe({ src: 'child.html' });`, selecting your container div and passing the path to your child page as `src`.
+* Include `responsiveIframe.js`. **Only once per page.**
+* Call `window.responsiveParent();` to set up all responsive iframes on the page. **Only once per page.**
 * You can optionally pass in a regex to filter incoming message domains: `$('iframe').responsiveIframe({ xdomain: '*\.npr\.org' });`.
 
 For example:
