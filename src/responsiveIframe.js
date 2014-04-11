@@ -1,3 +1,9 @@
+/*
+* This is a responsive iFrame library.
+* Check out the docs at http://foo or the readme at README.md for usage.
+
+*/
+
 window.responsiveChild = function(config){
     var parentWidth;
     var id;
@@ -63,14 +69,14 @@ window.responsiveChild = function(config){
                 settings.renderCallback(width);
             }
 
-            sendHeightToParent();
+            window.responsiveChild.sendHeightToParent();
         }
     };
 
     /*
     * Transmit the current iframe height to the parent.
     */
-    var sendHeightToParent = function() {
+    window.responsiveChild.sendHeightToParent = function() {
         var height = document.getElementsByTagName('body')[0].offsetHeight.toString();
         window.top.postMessage('responsive-child-' + id + '-'+ height, '*');
     };
@@ -86,10 +92,10 @@ window.responsiveChild = function(config){
         settings.renderCallback(width);
     }
 
-    sendHeightToParent();
+    window.responsiveChild.sendHeightToParent();
 
     if (settings.polling) {
-        window.setInterval(sendHeightToParent, settings.polling);
+        window.setInterval(window.responsiveChild.sendHeightToParent, settings.polling);
     }
 
 }
