@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Graphic Embed : NPR</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no" />
+    <style>
+        body {
+            font: 14px/1.4 Arial, Helvetica, sans-serif;
+            color: #333;
+        }
+        h3 { 
+            margin: 0 0 1em 0;
+            color: #333;
+            font-size: 12px;
+            background-color: #eee;
+            padding: 5px 10px;
+        }
+        p { margin: 0 0 1em 0; }
+        p.note {
+            font-size: 12px;
+            color: #666;
+        }
+        textarea {
+            display: block;
+            margin-bottom: 2em;
+        }
+        #example { 
+            margin-bottom: 2em;
+        }
+    </style>
+</head>
+<body>
+
+    <h3>iFrame Preview</h3>
+
+    <div id="example" data-iframe-target="child.html"></div>
+
+    <h3>Embed Code</h3>
+    <p class="note">
+        Replace "<strong>PATH-TO-THIS-FOLDER</strong>" with the actual published path to your files
+    </p>
+
+<!-- textarea contents -->
+    <textarea readonly="readonly" rows="10" cols="50">
+<div id="example" data-iframe-target="PATH-TO-THIS-FOLDER/child.html"></div>
+<script type="text/javascript" src="PATH-TO-THIS-FOLDER/js/responsiveIframe.js"></script>
+<script>window.responsiveParent();</script>
+    </textarea>
+<!-- end textarea contents -->
+
+
+    <script type="text/javascript" src="../../src/responsiveIframe.js"></script>
+    <script>window.responsiveParent();</script>
+
+</body>
+</html>
