@@ -47,7 +47,6 @@ var pym = (function() {
             var hash = '';
             var hashIndex = this.url.indexOf('#');
 
-            console.log(hashIndex, this.url, hash);
             if (hashIndex > -1) {
                 hash = this.url.substring(hashIndex, this.url.length);
                 this.url = this.url.substring(0, hashIndex);
