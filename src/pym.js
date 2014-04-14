@@ -43,6 +43,15 @@ var pym = (function() {
             // Create an iframe element attached to the document.
             var node = document.createElement("iframe");
 
+            // Save fragment id
+            var hash = '';
+            var hashIndex = this.url.indexOf('#');
+
+            if (hashIndex > -1) {
+                hash = this.url.substring(hashIndex, this.url.length);
+                this.url = this.url.substring(0, hashIndex);
+            }
+
             // If the URL contains querystring bits, use them.
             // Otherwise, just create a set of valid params.
             if (this.url.indexOf('?') < 0) {
@@ -51,8 +60,8 @@ var pym = (function() {
                 this.url += '&';
             }
 
-            // Append the initial width as a querystring parameter.
-            node.src = this.url + 'initialWidth=' + width + '&childId=' + this.id;
+            // Append the initial width as a querystring parameter, and the fragment id
+            node.src = this.url + 'initialWidth=' + width + '&childId=' + this.id + hash;
 
             // Set some attributes to this proto-iframe.
             node.setAttribute('width', '100%');
