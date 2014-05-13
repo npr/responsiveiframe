@@ -119,8 +119,8 @@ if (typeof jQuery !== 'undefined') {
   ResponsiveIframe.prototype.messageParent = function(scrollTop) {
     var h = document.body.offsetHeight;
     h = (scrollTop)? h+'s':h;
-    if(top.postMessage){
-      top.postMessage( h , '*');
+    if(parent.postMessage){
+      parent.postMessage( h , '*');
     } else {
       window.location.hash = 'h'+h;
     }
