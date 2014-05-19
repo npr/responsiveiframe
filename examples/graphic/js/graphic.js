@@ -6,12 +6,17 @@ var graphic_aspect_height = 9;
 var mobile_threshold = 500;
 var pymChild = null;
 
-function drawGraphic(width) {
-    var margin = {top: 10, right: 15, bottom: 25, left: 35};
-    var width = width - margin.left - margin.right;
+function drawGraphic(container_width) {
+    if (container_width == undefined || isNaN(container_width)) {
+        container_width = 600;
+    }
+
+    var margin = { top: 10, right: 15, bottom: 25, left: 35 };
+    var width = container_width - margin.left - margin.right;
     var height = Math.ceil((width * graphic_aspect_height) / graphic_aspect_width) - margin.top - margin.bottom;
     var num_ticks = 13;
-    if (width < mobile_threshold) {
+
+    if (container_width < mobile_threshold) {
         num_ticks = 5;
     }
 
@@ -24,11 +29,9 @@ function drawGraphic(width) {
     var y = d3.scale.linear()
         .range([height, 0]);
 
-    var formatAsPercentage = d3.formatPrefix('%',0);
-
     var xAxis = d3.svg.axis()
         .scale(x)
-        .orient("bottom")
+        .orient('bottom')
         .tickFormat(function(d,i) {
             if (width <= mobile_threshold) {
                 var fmt = d3.time.format('%y');
@@ -65,10 +68,10 @@ function drawGraphic(width) {
     }
 
     var svg = d3.select('#graphic').append('svg')
-        .attr("width", width + margin.left + margin.right)
-        .attr("height", height + margin.top + margin.bottom)
-        .append("g")
-        .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+        .attr('width', width + margin.left + margin.right)
+        .attr('height', height + margin.top + margin.bottom)
+        .append('g')
+        .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
 
     x.domain(d3.extent(graphic_data, function(d) { return d.date; }));
 
@@ -129,16 +132,20 @@ function drawGraphic(width) {
 }
 
 
-if (Modernizr.svg) {
-    d3.csv(graphic_data_url, function(error, data) {
-        graphic_data = data;
+$(window).load(function() {
+    if (Modernizr.svg) { // if svg is supported, draw dynamic chart
+        d3.csv(graphic_data_url, function(error, data) {
+            graphic_data = data;
 
-        graphic_data.forEach(function(d) {
-            d.date = d3.time.format('%Y-%m').parse(d.date);
-            d.jobs = d.jobs / 1000;
+            graphic_data.forEach(function(d) {
+                d.date = d3.time.format('%Y-%m').parse(d.date);
+                d.jobs = d.jobs / 1000;
+            });
+
+            // This is instantiating the child message with a callback but AFTER the D3 charts are drawn.
+            pymChild = new pym.Child({ renderCallback: drawGraphic });
         });
-
-        // This is instantiating the child message with a callback but AFTER the D3 charts are drawn.
-        pymChild = new pym.Child({ renderCallback: drawGraphic });
-    });
-}
+    } else { // If not, rely on static fallback image. No callback needed.
+        pymChild = new pym.Child({ });
+    }
+});
