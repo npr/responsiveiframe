@@ -11,3 +11,7 @@ Use case: The NPR Visuals team uses Pym.js to embed small custom bits of code (c
 Released under the MIT open source license. See `LICENSE` for details.
 
 Pym.js was built by the [NPR Visuals](http://github.com/nprapps) team, based on work by the [NPR Tech Team](https://github.com/npr/responsiveiframe) and [Ioseb Dzmanashvili](https://github.com/ioseb). Thanks to [Erik Hinton](https://twitter.com/erikhinton) for suggesting the name.
+
+Additional contributors:
+
+* [Pierre-Yves Jamon](https://github.com/Pym) 
