@@ -3,7 +3,13 @@
 * Check out the docs at http://blog.apps.npr.org/pym.js/ or the readme at README.md for usage.
 */
 
-var pym = (function() {
+(function(factory) {
+  if (typeof define === 'function' && define.amd) {
+    define(factory);
+  } else {
+    window.pym = factory.call(this);
+  }
+})(function() {
     var lib = {};
 
     var _isSafeMessage = function(e, settings) {
@@ -246,4 +252,4 @@ var pym = (function() {
     };
 
     return lib;
-}());
+});
