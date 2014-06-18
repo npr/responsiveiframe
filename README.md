@@ -15,3 +15,4 @@ Pym.js was built by the [NPR Visuals](http://github.com/nprapps) team, based on 
 Additional contributors:
 
 * [Pierre-Yves Jamon](https://github.com/Pym) 
+* [jugglinmike](https://github.com/jugglinmike)
