@@ -25,6 +25,35 @@
         return true;
     }
 
+    var _autoInit = function() {
+      var elements = document.querySelectorAll(
+        '[data-pym-src]:not([data-pym-auto-initialized])'
+     );
+      var idx, length, element, id, src, xdomain, config;
+
+       for (idx = 0, length = elements.length; idx < length; ++idx) {
+         element = elements[idx];
+
+         /**
+          * Mark automatically-initialized elements so they are not
+          * re-initialized if the user includes pym.js more thance once in the
+          * same document.
+          */
+         element.setAttribute('data-pym-auto-initialized', '');
+
+         id = element.id = 'pym_' + idx;
+         src = element.getAttribute('data-pym-src');
+         xdomain = element.getAttribute('data-pym-xdomain');
+         config = {};
+
+         if (xdomain) {
+           config.xdomain = xdomain;
+         }
+
+         lib.Parent(id, src, config);
+       }
+    };
+
     lib.Parent = function(id, url, config) {
         /*
         * A global function for setting up a responsive parent.
@@ -250,6 +279,10 @@
 
         return this;
     };
+
+    if (document.querySelector('script[data-pym-autoinit]')) {
+      _autoInit();
+    }
 
     return lib;
 });
