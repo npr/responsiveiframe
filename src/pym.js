@@ -4,11 +4,11 @@
 */
 
 (function(factory) {
-  if (typeof define === 'function' && define.amd) {
-    define(factory);
-  } else {
-    window.pym = factory.call(this);
-  }
+    if (typeof define === 'function' && define.amd) {
+        define(factory);
+    } else {
+        window.pym = factory.call(this);
+    }
 })(function() {
     var lib = {};
 
