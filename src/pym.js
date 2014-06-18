@@ -26,32 +26,40 @@
     }
 
     var _autoInit = function() {
-      var elements = document.querySelectorAll(
-        '[data-pym-src]:not([data-pym-auto-initialized])'
-     );
-      var idx, length, element, id, src, xdomain, config;
+        /*
+        * Initialize Pym for elements on page that have data-pym attributes.
+        */
+        var elements = document.querySelectorAll(
+            '[data-pym-src]:not([data-pym-auto-initialized])'
+        );
 
-       for (idx = 0, length = elements.length; idx < length; ++idx) {
-         element = elements[idx];
+        var length = elements.length;
 
-         /**
-          * Mark automatically-initialized elements so they are not
-          * re-initialized if the user includes pym.js more thance once in the
-          * same document.
-          */
-         element.setAttribute('data-pym-auto-initialized', '');
+        for (var idx = 0; idx < length; ++idx) {
+            var element = elements[idx];
 
-         id = element.id = 'pym_' + idx;
-         src = element.getAttribute('data-pym-src');
-         xdomain = element.getAttribute('data-pym-xdomain');
-         config = {};
+            /*
+            * Mark automatically-initialized elements so they are not
+            * re-initialized if the user includes pym.js more than once in the
+            * same document.
+            */
+            element.setAttribute('data-pym-auto-initialized', '');
 
-         if (xdomain) {
-           config.xdomain = xdomain;
-         }
+            // Ensure elements have an id
+            if (element.id === '') {
+                element.id = 'pym-' + idx;
+            }
 
-         lib.Parent(id, src, config);
-       }
+            var src = element.getAttribute('data-pym-src');
+            var xdomain = element.getAttribute('data-pym-xdomain');
+            var config = {};
+
+            if (xdomain) {
+               config.xdomain = xdomain;
+            }
+
+            new lib.Parent(element.id, src, config);
+        }
     };
 
     lib.Parent = function(id, url, config) {
@@ -280,9 +288,8 @@
         return this;
     };
 
-    if (document.querySelector('script[data-pym-autoinit]')) {
-      _autoInit();
-    }
+    // Initialize elements with pym data attributes
+    _autoInit();
 
     return lib;
 });
