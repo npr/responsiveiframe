@@ -10,7 +10,7 @@
         window.pym = factory.call(this);
     }
 })(function() {
-    var MESSAGE_DELIMITER = 'PYM';
+    var MESSAGE_DELIMITER = 'xPYMx';
 
     var lib = {};
 

@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no" />
+
+</head>
+<body>
+    <a id="test" href="#">I'm the parent--click me!</a>
+    <div id="from-child"></div>
+    <div id="example"></div>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script type="text/javascript" src="../../src/pym.js"></script>
+    <script>
+        var pymParent = pym.Parent('example', 'child.html', {});
+
+        function onClick(e) {
+            e.preventDefault();
+            pymParent.sendMessageToChild('parent-click', 'Parent clicked!');
+        }
+
+        pymParent.on('child-click', function(data) {
+             $('#from-child').text(data);
+        });
+
+        $('#test').click(onClick);
+    </script>
+</body>
+</html>
