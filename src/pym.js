@@ -91,6 +91,7 @@
         this.id = id;
         this.url = url;
         this.el = document.getElementById(id);
+        this.iframe = null;
 
         this.settings = {
             xdomain: '*'
@@ -108,7 +109,7 @@
             var width = this.el.offsetWidth.toString();
 
             // Create an iframe element attached to the document.
-            var node = document.createElement("iframe");
+            this.iframe = document.createElement("iframe");
 
             // Save fragment id
             var hash = '';
@@ -127,16 +128,16 @@
                 this.url += '&';
             }
                         // Append the initial width as a querystring parameter, and the fragment id
-            node.src = this.url + 'initialWidth=' + width + '&childId=' + this.id + hash;
+            this.iframe.src = this.url + 'initialWidth=' + width + '&childId=' + this.id + hash;
 
             // Set some attributes to this proto-iframe.
-            node.setAttribute('width', '100%');
-            node.setAttribute('scrolling', 'no');
-            node.setAttribute('marginheight', '0');
-            node.setAttribute('frameborder', '0');
+            this.iframe.setAttribute('width', '100%');
+            this.iframe.setAttribute('scrolling', 'no');
+            this.iframe.setAttribute('marginheight', '0');
+            this.iframe.setAttribute('frameborder', '0');
 
             // Append the iframe to our element.
-            this.el.appendChild(node);
+            this.el.appendChild(this.iframe);
 
             // Add an event listener that will handle redrawing the child on resize.
             var that = this;
@@ -193,8 +194,8 @@
              * Handle parent message from child.
              */
             var height = parseInt(data);
-
-            this.el.getElementsByTagName('iframe')[0].setAttribute('height', height + 'px');
+            
+            this.iframe.setAttribute('height', height + 'px');
         };
 
         this.sendWidthToChild = function() {
@@ -339,7 +340,9 @@
         this.on('width', this._onWidthMessage);
 
         // Initialize settings with overrides.
-        for (var key in config) { this.settings[key] = config[key]; }
+        for (var key in config) {
+            this.settings[key] = config[key];
+        }
 
         // Set up a listener to handle any incoming messages.
         var that = this;
