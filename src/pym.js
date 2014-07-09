@@ -22,7 +22,11 @@
         var regex = new RegExp("[\\?&]" + name.replace(/[\[]/, '\\\[').replace(/[\]]/, '\\\]') + '=([^&#]*)');
         var results = regex.exec(location.search);
 
-        return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, " "));
+        if (results === null) {
+            return '';
+        }
+
+        return decodeURIComponent(results[1].replace(/\+/g, " "));
     };
 
     var _isSafeMessage = function(e, settings) {
@@ -168,6 +172,17 @@
             this.messageHandlers[messageType].push(callback);
         };
 
+        this.fire = function(messageType, message) {
+            /*
+             * Fire all event handlers for a given message type.
+             */
+            if (messageType in this.messageHandlers) {
+                for (var i = 0; i < this.messageHandlers[messageType].length; i++) {
+                   this.messageHandlers[messageType][i].call(this, message);
+                }
+            }
+        };
+
         this.processChildMessage = function(e) {
             /*
             * Process a new message from the child.
@@ -186,11 +201,7 @@
             var messageType = match[1];
             var message = match[2];
 
-            if (messageType in this.messageHandlers) {
-                for (var i = 0; i < this.messageHandlers[messageType].length; i++) {
-                   this.messageHandlers[messageType][i].call(this, message);
-                }
-            }
+            this.fire(messageType, message);
         };
 
         this.sendMessageToChild = function(messageType, message) {
@@ -266,6 +277,17 @@
             this.messageHandlers[messageType].push(callback);
         };
 
+        this.fire = function(messageType, message) {
+            /*
+             * Fire all event handlers for a given message type.
+             */
+            if (messageType in this.messageHandlers) {
+                for (var i = 0; i < this.messageHandlers[messageType].length; i++) {
+                   this.messageHandlers[messageType][i].call(this, message);
+                }
+            }
+        };
+
         this.processParentMessage = function(e) {
             /*
             * Process a new message from parent frame.
@@ -281,11 +303,8 @@
 
             var messageType = match[1];
             var message = match[2];
-            if (messageType in this.messageHandlers) {
-                for (var i = 0; i < this.messageHandlers[messageType].length; i++) {
-                   this.messageHandlers[messageType][i].call(this, message);
-                }
-            }
+
+            this.fire(messageType, message);
         };
 
         this.sendMessageToParent = function(messageType, message) {
