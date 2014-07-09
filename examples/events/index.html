@@ -10,7 +10,7 @@
     <a id="test" href="#">I'm the parent--click me!</a>
     <div id="from-child"></div>
     <div id="example"></div>
-    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+
     <script type="text/javascript" src="../../src/pym.js"></script>
     <script>
         var pymParent = pym.Parent('example', 'child.html', {});
@@ -21,10 +21,10 @@
         }
 
         pymParent.on('child-click', function(data) {
-             $('#from-child').text(data);
+             document.getElementById('from-child').innerHTML = data;
         });
 
-        $('#test').click(onClick);
+        document.getElementById('test').addEventListener('click', onClick);
     </script>
 </body>
 </html>

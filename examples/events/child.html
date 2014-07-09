@@ -9,23 +9,21 @@
     <a id="test" href="#">I'm the child--click me!</a>
     <div id="from-parent"></div>
 
-    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
     <script src="../../src/pym.js" type="text/javascript"></script>
     <script>
         var pymChild = new pym.Child();
 
         function onClick(e) {
             e.preventDefault();
-            console.log(2);
             pymChild.sendMessageToParent('child-click', 'Child clicked!');
         }
 
         pymChild.on('parent-click', function(data) {
-            $('#from-parent').text(data);
+            document.getElementById('from-parent').innerHTML = data;
             pymChild.sendHeightToParent();
         });
 
-        $('#test').click(onClick);
+        document.getElementById('test').addEventListener('click', onClick);
 
     </script>
 </body>
