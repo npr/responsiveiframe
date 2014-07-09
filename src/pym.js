@@ -10,6 +10,8 @@
         window.pym = factory.call(this);
     }
 })(function() {
+    var DELIMITER = 'PYM';
+
     var lib = {};
 
     var _isSafeMessage = function(e, settings) {
@@ -23,6 +25,11 @@
         }
 
         return true;
+    }
+
+    var _makeMessage = function(id, messageType, message) {
+        // use string building because JSON is not supported in all browsers.
+        return 'pym' + DELIMITER + id + DELIMITER + messageType + DELIMITER + message;
     }
 
     var _autoInit = function() {
@@ -75,6 +82,10 @@
             xdomain: '*'
         };
 
+        this.messageRegex = new RegExp('^pym' + DELIMITER + this.id + DELIMITER + '(\\S+)' + DELIMITER + '(.+)$');
+
+        this.messageHandlers = {};
+
         this.constructIframe = function() {
             /*
             * A function which handles constructing an iframe inside a given element.
@@ -102,8 +113,7 @@
             } else {
                 this.url += '&';
             }
-
-            // Append the initial width as a querystring parameter, and the fragment id
+                        // Append the initial width as a querystring parameter, and the fragment id
             node.src = this.url + 'initialWidth=' + width + '&childId=' + this.id + hash;
 
             // Set some attributes to this proto-iframe.
@@ -120,7 +130,7 @@
             window.addEventListener('resize', function(e) {
                 that.sendWidthToChild();
             });
-        }
+        };
 
         this.processChildMessage = function(e) {
             /*
@@ -130,27 +140,42 @@
             if (!_isSafeMessage(e, this.settings)) { return; }
 
             // Grab the message from the child and parse it.
-            var match = e.data.match(/^responsivechild (\S+) (\d+)$/);
+            var match = e.data.match(this.messageRegex);
 
             // If there's no match or too many matches in the message, punt.
             if (!match || match.length !== 3) {
                 return false;
             }
 
-            // Get the ID from the message.
-            var childId = match[1];
+            var messageType = match[1];
+            var message = match[2];
 
-            // Is this message for me?
-            if (childId != this.id) {
-                return;
+            if (messageType in this.messageHandlers) {
+                for (var i = 0; i < this.messageHandlers[messageType].length; i++) {
+                   this.messageHandlers[messageType][i].call(this, message);
+                }
+            }
+        };
+
+        this.sendMessage = function(messageType, message) {
+            this.el.getElementsByTagName('iframe')[0].contentWindow.postMessage(_makeMessage(this.id, messageType, message), '*');
+        };
+
+        this.on = function(messageType, callback) {
+            if (!(messageType in this.messageHandlers)) {
+                this.messageHandlers[messageType] = [];
             }
 
+            this.messageHandlers[messageType].push(callback);
+        };
+
+        this._onHeightMessage = function(data) {
             // Get the child's height from the message.
-            var height = parseInt(match[2]);
+            var height = parseInt(data);
 
             // Update the height.
             this.el.getElementsByTagName('iframe')[0].setAttribute('height', height + 'px');
-        }
+        };
 
         this.sendWidthToChild = function() {
             /*
@@ -161,13 +186,15 @@
             var width = this.el.offsetWidth.toString();
 
             // Pass the width out to the child so it can compute the height.
-            this.el.getElementsByTagName('iframe')[0].contentWindow.postMessage('responsiveparent ' + this.id + ' ' + width, '*');
-        }
+            this.sendMessage('width', width);
+        };
 
         // Add any overrides to settings coming from config.
         for (var key in config) {
             this.settings[key] = config[key];
         }
+
+        this.on('height', this._onHeightMessage);
 
         // Add a listener for processing messages from the child.
         var that = this;
@@ -195,6 +222,9 @@
             polling: 0
         };
 
+        this.messageRegex = null;
+        this.messageHandlers = {};
+
         this.getParameterByName = function(name) {
             /*
             * Generic function for parsing URL params.
@@ -215,33 +245,46 @@
             var height = document.getElementsByTagName('body')[0].offsetHeight.toString();
 
             // Send the height to the parent.
-            window.top.postMessage('responsivechild ' + this.id + ' '+ height, '*');
+            this.sendMessage('height', height);
         };
 
         this.processParentMessage = function(e) {
             /*
             * Process a new message from parent frame.
             */
-
             // First, punt if this isn't from an acceptable xdomain.
             if (!_isSafeMessage(e, this.settings)) { return; }
 
             // Get the message from the parent.
-            var match = e.data.match(/^responsiveparent (\S+) (\d+)$/);
+            var match = e.data.match(this.messageRegex);
 
             // If there's no match or it's a bad format, punt.
             if (!match || match.length !== 3) { return; }
 
-            // Get the ID out of the message.
-            var id = match[1];
+            var messageType = match[1];
+            var message = match[2];
+            if (messageType in this.messageHandlers) {
+                for (var i = 0; i < this.messageHandlers[messageType].length; i++) {
+                   this.messageHandlers[messageType][i].call(this, message);
+                }
+            }
+        };
 
-            // Ensure message is meant for this child
-            if (id != this.id) {
-                return;
+        this.sendMessage = function(messageType, message) {
+            window.top.postMessage(_makeMessage(this.id, messageType, message), '*');
+        };
+
+
+        this.on = function(messageType, callback) {
+            if (!(messageType in this.messageHandlers)) {
+                this.messageHandlers[messageType] = [];
             }
 
-            // Get the width out of the message.
-            var width = parseInt(match[2]);
+            this.messageHandlers[messageType].push(callback);
+        };
+
+        this._onWidthMessage = function(data) {
+            var width = parseInt(data);
 
             // Change the width if it's different.
             if (width != this.parentWidth) {
@@ -257,6 +300,17 @@
             }
         };
 
+        // Identify what ID the parent knows this child as.
+        this.id = this.getParameterByName('childId');
+        this.messageRegex = new RegExp('^pym' + DELIMITER + this.id + DELIMITER + '(\\S+)' + DELIMITER + '(.+)$');
+
+        console.log(this.messageRegex);
+
+        // Get the initial width from a URL parameter.
+        var width = parseInt(this.getParameterByName('initialWidth'));
+
+        this.on('width', this._onWidthMessage);
+
         // Initialize settings with overrides.
         for (var key in config) { this.settings[key] = config[key]; }
 
@@ -265,12 +319,6 @@
         window.addEventListener('message', function(e) {
             that.processParentMessage(e);
         }, false);
-
-        // Identify what ID the parent knows this child as.
-        this.id = this.getParameterByName('childId');
-
-        // Get the initial width from a URL parameter.
-        var width = parseInt(this.getParameterByName('initialWidth'));
 
         // If there's a callback function, call it.
         if (this.settings.renderCallback) {
