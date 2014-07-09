@@ -14,6 +14,17 @@
 
     var lib = {};
 
+    var _getParameterByName = function(name) {
+        /*
+        * Generic function for parsing URL params.
+        * Via http://stackoverflow.com/questions/901115/how-can-i-get-query-string-values-in-javascript
+        */
+        var regex = new RegExp("[\\?&]" + name.replace(/[\[]/, '\\\[').replace(/[\]]/, '\\\]') + '=([^&#]*)');
+        var results = regex.exec(location.search);
+
+        return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, " "));
+    };
+
     var _isSafeMessage = function(e, settings) {
         /*
         * Check the message to make sure it comes from an acceptable xdomain.
@@ -146,6 +157,17 @@
             });
         };
 
+        this.on = function(messageType, callback) {
+            /*
+             * Bind a callback to a message from the child.
+             */
+            if (!(messageType in this.messageHandlers)) {
+                this.messageHandlers[messageType] = [];
+            }
+
+            this.messageHandlers[messageType].push(callback);
+        };
+
         this.processChildMessage = function(e) {
             /*
             * Process a new message from the child.
@@ -178,15 +200,13 @@
             this.el.getElementsByTagName('iframe')[0].contentWindow.postMessage(_makeMessage(this.id, messageType, message), '*');
         };
 
-        this.on = function(messageType, callback) {
+        this.sendWidthToChild = function() {
             /*
-             * Bind a callback to a message from the child.
-             */
-            if (!(messageType in this.messageHandlers)) {
-                this.messageHandlers[messageType] = [];
-            }
+            * Transmit the current iframe width to the child.
+            */
+            var width = this.el.offsetWidth.toString();
 
-            this.messageHandlers[messageType].push(callback);
+            this.sendMessageToChild('width', width);
         };
 
         this._onHeightMessage = function(data) {
@@ -196,15 +216,6 @@
             var height = parseInt(data);
             
             this.iframe.setAttribute('height', height + 'px');
-        };
-
-        this.sendWidthToChild = function() {
-            /*
-            * Transmit the current iframe width to the child.
-            */
-            var width = this.el.offsetWidth.toString();
-
-            this.sendMessageToChild('width', width);
         };
 
         // Add any overrides to settings coming from config.
@@ -244,28 +255,15 @@
         this.messageRegex = null;
         this.messageHandlers = {};
 
-        this.getParameterByName = function(name) {
+        this.on = function(messageType, callback) {
             /*
-            * Generic function for parsing URL params.
-            * Via http://stackoverflow.com/questions/901115/how-can-i-get-query-string-values-in-javascript
-            */
-            var regex = new RegExp("[\\?&]" + name.replace(/[\[]/, '\\\[').replace(/[\]]/, '\\\]') + '=([^&#]*)');
-            var results = regex.exec(location.search);
+             * Bind to a callback to a message from the parent.
+             */
+            if (!(messageType in this.messageHandlers)) {
+                this.messageHandlers[messageType] = [];
+            }
 
-            return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, " "));
-        };
-
-        this.sendHeightToParent = function() {
-            /*
-            * Transmit the current iframe height to the parent.
-            * Make this callable from external scripts in case they update the body out of sequence.
-            */
-
-            // Get the child's height.
-            var height = document.getElementsByTagName('body')[0].offsetHeight.toString();
-
-            // Send the height to the parent.
-            this.sendMessageToParent('height', height);
+            this.messageHandlers[messageType].push(callback);
         };
 
         this.processParentMessage = function(e) {
@@ -297,16 +295,17 @@
             window.top.postMessage(_makeMessage(this.id, messageType, message), '*');
         };
 
-
-        this.on = function(messageType, callback) {
+        this.sendHeightToParent = function() {
             /*
-             * Bind to a callback to a message from the parent.
-             */
-            if (!(messageType in this.messageHandlers)) {
-                this.messageHandlers[messageType] = [];
-            }
+            * Transmit the current iframe height to the parent.
+            * Make this callable from external scripts in case they update the body out of sequence.
+            */
 
-            this.messageHandlers[messageType].push(callback);
+            // Get the child's height.
+            var height = document.getElementsByTagName('body')[0].offsetHeight.toString();
+
+            // Send the height to the parent.
+            this.sendMessageToParent('height', height);
         };
 
         this._onWidthMessage = function(data) {
@@ -330,11 +329,11 @@
         };
 
         // Identify what ID the parent knows this child as.
-        this.id = this.getParameterByName('childId');
+        this.id = _getParameterByName('childId');
         this.messageRegex = new RegExp('^pym' + MESSAGE_DELIMITER + this.id + MESSAGE_DELIMITER + '(\\S+)' + MESSAGE_DELIMITER + '(.+)$');
 
         // Get the initial width from a URL parameter.
-        var width = parseInt(this.getParameterByName('initialWidth'));
+        var width = parseInt(_getParameterByName('initialWidth'));
 
         // Bind the width message handler
         this.on('width', this._onWidthMessage);
