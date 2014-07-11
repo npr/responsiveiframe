@@ -167,7 +167,8 @@
             } else {
                 this.url += '&';
             }
-                        // Append the initial width as a querystring parameter, and the fragment id
+            
+            // Append the initial width as a querystring parameter, and the fragment id
             this.iframe.src = this.url + 'initialWidth=' + width + '&childId=' + this.id + hash;
 
             // Set some attributes to this proto-iframe.
