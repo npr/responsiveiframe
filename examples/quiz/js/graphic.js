@@ -11,7 +11,7 @@ function check_answer(e) {
         $(this).unbind('click');
     });
 
-    pymChild.sendHeightToParent();
+    pymChild.sendHeight();
 }
 
 $('.question').find('li').on('click', check_answer);

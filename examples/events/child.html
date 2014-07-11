@@ -15,12 +15,12 @@
 
         function onClick(e) {
             e.preventDefault();
-            pymChild.sendMessageToParent('child-click', 'Child clicked!');
+            pymChild.sendMessage('child-click', 'Child clicked!');
         }
 
-        pymChild.on('parent-click', function(data) {
+        pymChild.onMessage('parent-click', function(data) {
             document.getElementById('from-parent').innerHTML = data;
-            pymChild.sendHeightToParent();
+            pymChild.sendHeight();
         });
 
         document.getElementById('test').addEventListener('click', onClick);

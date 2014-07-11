@@ -123,7 +123,7 @@ function drawGraphic(width) {
             });
 
     if (pymChild) {
-        pymChild.sendHeightToParent();
+        pymChild.sendHeight();
     }
 }
 

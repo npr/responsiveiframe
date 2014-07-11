@@ -17,10 +17,10 @@
 
         function onClick(e) {
             e.preventDefault();
-            pymParent.sendMessageToChild('parent-click', 'Parent clicked!');
+            pymParent.sendMessage('parent-click', 'Parent clicked!');
         }
 
-        pymParent.on('child-click', function(data) {
+        pymParent.onMessage('child-click', function(data) {
              document.getElementById('from-child').innerHTML = data;
         });
 

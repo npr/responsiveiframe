@@ -127,7 +127,7 @@ function drawGraphic(container_width) {
 
     // This is calling an updated height.
     if (pymChild) {
-        pymChild.sendHeightToParent();
+        pymChild.sendHeight();
     }
 }
 

@@ -14,11 +14,14 @@
 
     var lib = {};
 
+    /**
+    * Generic function for parsing URL params.
+    * Via http://stackoverflow.com/questions/901115/how-can-i-get-query-string-values-in-javascript
+    *
+    * @method _getParameterByName
+    * @param {String} name The name of the paramter to get from the URL.
+    */
     var _getParameterByName = function(name) {
-        /*
-        * Generic function for parsing URL params.
-        * Via http://stackoverflow.com/questions/901115/how-can-i-get-query-string-values-in-javascript
-        */
         var regex = new RegExp("[\\?&]" + name.replace(/[\[]/, '\\\[').replace(/[\]]/, '\\\]') + '=([^&#]*)');
         var results = regex.exec(location.search);
 
@@ -29,11 +32,15 @@
         return decodeURIComponent(results[1].replace(/\+/g, " "));
     };
 
+    /**
+     * Check the message to make sure it comes from an acceptable xdomain.
+     * Defaults to '*' but can be overriden in config.
+     *
+     * @method _isSafeMessage
+     * @param {Event} e The message event.
+     * @param {Object} settings Configuration.
+     */
     var _isSafeMessage = function(e, settings) {
-        /*
-        * Check the message to make sure it comes from an acceptable xdomain.
-        * Defaults to '*' but can be overriden in config.
-        */
         if (settings.xdomain !== '*') {
             // If origin doesn't match our xdomain, return.
             if (!e.origin.match(new RegExp(settings.xdomain + '$'))) { return; }
@@ -42,29 +49,41 @@
         return true;
     }
 
+    /**
+     * Construct a message to send between frames.
+     *
+     * NB: We use string-building here because JSON message passing is
+     * not supported in all browsers.
+     *
+     * @method _makeMessage
+     * @param {String} id The unique id of the message recipient.
+     * @param {String} messageType The type of message to send.
+     * @param {String} message The message to send.
+     */
     var _makeMessage = function(id, messageType, message) {
-        /*
-         * We use string-building here because JSON message passing is
-         * not supported in all browsers.
-         */
         var bits = ['pym', id, messageType, message];
 
         return bits.join(MESSAGE_DELIMITER);
     }
 
+    /**
+     * Construct a regex to validate and parse messages.
+     *
+     * @method _makeMessageRegex
+     * @param {String} id The unique id of the message recipient.
+     */
     var _makeMessageRegex = function(id) {
-        /*
-         * Construct a regex to match passed messages.
-         */
         var bits = ['pym', id, '(\\S+)', '(.+)'];
 
         return new RegExp('^' + bits.join(MESSAGE_DELIMITER) + '$');
     }
 
+    /**
+     * Initialize Pym for elements on page that have data-pym attributes.
+     *
+     * @method _autoInit
+     */
     var _autoInit = function() {
-        /*
-        * Initialize Pym for elements on page that have data-pym attributes.
-        */
         var elements = document.querySelectorAll(
             '[data-pym-src]:not([data-pym-auto-initialized])'
         );
@@ -98,11 +117,15 @@
         }
     };
 
+    /**
+     * The Parent half of a response iframe.
+     *
+     * @class Parent
+     * @param {String} id The id of the div into which the iframe will be rendered.
+     * @param {String} url The url of the iframe source.
+     * @param {Object} config Configuration to override the default settings.
+     */
     lib.Parent = function(id, url, config) {
-        /*
-        * A global function for setting up a responsive parent.
-        * Use the config object to override the default settings.
-        */
         this.id = id;
         this.url = url;
         this.el = document.getElementById(id);
@@ -115,11 +138,13 @@
         this.messageRegex = _makeMessageRegex(this.id); 
         this.messageHandlers = {};
 
-        this.constructIframe = function() {
-            /*
-            * A function which handles constructing an iframe inside a given element.
-            */
-
+        /**
+         * Construct the iframe.
+         *
+         * @memberof Parent.prototype
+         * @method _constructIframe
+         */
+        this._constructIframe = function() {
             // Calculate the width of this element.
             var width = this.el.offsetWidth.toString();
 
@@ -157,25 +182,19 @@
             // Add an event listener that will handle redrawing the child on resize.
             var that = this;
             window.addEventListener('resize', function(e) {
-                that.sendWidthToChild();
+                that.sendWidth();
             });
         };
 
-        this.on = function(messageType, callback) {
-            /*
-             * Bind a callback to a message from the child.
-             */
-            if (!(messageType in this.messageHandlers)) {
-                this.messageHandlers[messageType] = [];
-            }
-
-            this.messageHandlers[messageType].push(callback);
-        };
-
-        this.fire = function(messageType, message) {
-            /*
-             * Fire all event handlers for a given message type.
-             */
+        /**
+         * Fire all event handlers for a given message type.
+         *
+         * @memberof Parent.prototype
+         * @method _fire
+         * @param {String} messageType The type of message.
+         * @param {String} message The message data.
+         */
+        this._fire = function(messageType, message) {
             if (messageType in this.messageHandlers) {
                 for (var i = 0; i < this.messageHandlers[messageType].length; i++) {
                    this.messageHandlers[messageType][i].call(this, message);
@@ -183,11 +202,19 @@
             }
         };
 
-        this.processChildMessage = function(e) {
-            /*
-            * Process a new message from the child.
-            * Used to set the height on our iframe.
-            */
+        /**
+         * @callback Parent~onMessageCallback
+         * @param {String} message The message data.
+         */
+
+        /**
+         * Process a new message from the child.
+         *
+         * @memberof Parent.prototype
+         * @method _processMessage
+         * @param {Event} e A message event.
+         */
+        this._processMessage = function(e) {
             if (!_isSafeMessage(e, this.settings)) { return; }
 
             // Grab the message from the child and parse it.
@@ -201,32 +228,66 @@
             var messageType = match[1];
             var message = match[2];
 
-            this.fire(messageType, message);
+            this._fire(messageType, message);
         };
 
-        this.sendMessageToChild = function(messageType, message) {
-            /*
-             * Send a message to the the child.
-             */
-            this.el.getElementsByTagName('iframe')[0].contentWindow.postMessage(_makeMessage(this.id, messageType, message), '*');
-        };
-
-        this.sendWidthToChild = function() {
-            /*
-            * Transmit the current iframe width to the child.
-            */
-            var width = this.el.offsetWidth.toString();
-
-            this.sendMessageToChild('width', width);
-        };
-
-        this._onHeightMessage = function(data) {
+        /**
+         * Resize iframe in response to new height message from child.
+         *
+         * @memberof Parent.prototype
+         * @method _onHeightMessage
+         * @param {String} message The new height.
+         */
+        this._onHeightMessage = function(message) {
             /*
              * Handle parent message from child.
              */
-            var height = parseInt(data);
+            var height = parseInt(message);
             
             this.iframe.setAttribute('height', height + 'px');
+        };
+
+
+        /**
+         * Bind a callback to a given messageType from the child.
+         *
+         * @memberof Parent.prototype
+         * @method onMessage
+         * @param {String} messageType The type of message being listened for.
+         * @param {Parent~onMessageCallback} callback The callback to invoke when a message of the given type is received.
+         */
+        this.onMessage = function(messageType, callback) {
+            if (!(messageType in this.messageHandlers)) {
+                this.messageHandlers[messageType] = [];
+            }
+
+            this.messageHandlers[messageType].push(callback);
+        };
+
+        /**
+         * Send a message to the the child.
+         *
+         * @memberof Parent.prototype
+         * @method sendMessage
+         * @param {String} messageType The type of message to send.
+         * @param {String} message The message data to send.
+         */
+        this.sendMessage = function(messageType, message) {
+            this.el.getElementsByTagName('iframe')[0].contentWindow.postMessage(_makeMessage(this.id, messageType, message), '*');
+        };
+
+        /**
+         * Transmit the current iframe width to the child.
+         *
+         * You shouldn't need to call this directly.
+         *
+         * @memberof Parent.prototype
+         * @method sendWidth
+         */
+        this.sendWidth = function() {
+            var width = this.el.offsetWidth.toString();
+
+            this.sendMessage('width', width);
         };
 
         // Add any overrides to settings coming from config.
@@ -235,25 +296,27 @@
         }
 
         // Add height event callback 
-        this.on('height', this._onHeightMessage);
+        this.onMessage('height', this._onHeightMessage);
 
         // Add a listener for processing messages from the child.
         var that = this;
         window.addEventListener('message', function(e) {
-            return that.processChildMessage(e)
+            return that._processMessage(e)
         }, false);
 
         // Construct the iframe in the container element.
-        this.constructIframe();
+        this._constructIframe();
 
         return this;
     };
 
+    /**
+     * The Child half of a responsive iframe.
+     *
+     * @class Child
+     * @param {Object} config Configuration to override the default settings.
+     */
     lib.Child = function(config) {
-        /*
-        * A global function for setting up a responsive child.
-        * Use the config object to override the default settings.
-        */
         this.parentWidth = null;
         this.id = null;
 
@@ -266,10 +329,15 @@
         this.messageRegex = null;
         this.messageHandlers = {};
 
-        this.on = function(messageType, callback) {
-            /*
-             * Bind to a callback to a message from the parent.
-             */
+        /**
+         * Bind a callback to a given messageType from the child.
+         *
+         * @memberof Child.prototype
+         * @method onMessage
+         * @param {String} messageType The type of message being listened for.
+         * @param {Child~onMessageCallback} callback The callback to invoke when a message of the given type is received.
+         */
+        this.onMessage = function(messageType, callback) {
             if (!(messageType in this.messageHandlers)) {
                 this.messageHandlers[messageType] = [];
             }
@@ -277,7 +345,20 @@
             this.messageHandlers[messageType].push(callback);
         };
 
-        this.fire = function(messageType, message) {
+        /**
+         * @callback Child~onMessageCallback
+         * @param {String} message The message data.
+         */
+
+        /**
+         * Fire all event handlers for a given message type.
+         *
+         * @memberof Parent.prototype
+         * @method _fire
+         * @param {String} messageType The type of message.
+         * @param {String} message The message data.
+         */
+        this._fire = function(messageType, message) {
             /*
              * Fire all event handlers for a given message type.
              */
@@ -288,7 +369,14 @@
             }
         };
 
-        this.processParentMessage = function(e) {
+        /**
+         * Process a new message from the parent.
+         *
+         * @memberof Child.prototype
+         * @method _processMessage
+         * @param {Event} e A message event.
+         */
+        this._processMessage = function(e) {
             /*
             * Process a new message from parent frame.
             */
@@ -304,17 +392,33 @@
             var messageType = match[1];
             var message = match[2];
 
-            this.fire(messageType, message);
+            this._fire(messageType, message);
         };
 
-        this.sendMessageToParent = function(messageType, message) {
+        /**
+         * Send a message to the the Parent.
+         *
+         * @memberof Child.prototype
+         * @method sendMessage
+         * @param {String} messageType The type of message to send.
+         * @param {String} message The message data to send.
+         */
+        this.sendMessage = function(messageType, message) {
             /*
              * Send a message to the parent.
              */
             window.top.postMessage(_makeMessage(this.id, messageType, message), '*');
         };
 
-        this.sendHeightToParent = function() {
+        /**
+         * Transmit the current iframe height to the parent.
+         *
+         * Call this directly in cases where you manually alter the height of the iframe contents.
+         *
+         * @memberof Child.prototype
+         * @method sendHeight
+         */
+        this.sendHeight = function() {
             /*
             * Transmit the current iframe height to the parent.
             * Make this callable from external scripts in case they update the body out of sequence.
@@ -324,14 +428,21 @@
             var height = document.getElementsByTagName('body')[0].offsetHeight.toString();
 
             // Send the height to the parent.
-            this.sendMessageToParent('height', height);
+            this.sendMessage('height', height);
         };
 
-        this._onWidthMessage = function(data) {
+        /**
+         * Resize iframe in response to new width message from parent.
+         *
+         * @memberof Child.prototype
+         * @method _onWidthMessage
+         * @param {String} message The new width.
+         */
+        this._onWidthMessage = function(message) {
             /*
              * Handle width message from the child.
              */
-            var width = parseInt(data);
+            var width = parseInt(message);
 
             // Change the width if it's different.
             if (width != this.parentWidth) {
@@ -343,7 +454,7 @@
                 }
 
                 // Send the height back to the parent.
-                this.sendHeightToParent();
+                this.sendHeight();
             }
         };
 
@@ -355,7 +466,7 @@
         var width = parseInt(_getParameterByName('initialWidth'));
 
         // Bind the width message handler
-        this.on('width', this._onWidthMessage);
+        this.onMessage('width', this._onWidthMessage);
 
         // Initialize settings with overrides.
         for (var key in config) {
@@ -365,7 +476,7 @@
         // Set up a listener to handle any incoming messages.
         var that = this;
         window.addEventListener('message', function(e) {
-            that.processParentMessage(e);
+            that._processMessage(e);
         }, false);
 
         // If there's a callback function, call it.
@@ -374,11 +485,11 @@
         }
 
         // Send the initial height to the parent.
-        this.sendHeightToParent();
+        this.sendHeight();
 
         // If we're configured to poll, create a setInterval to handle that.
         if (this.settings.polling) {
-            window.setInterval(this.sendHeightToParent, this.settings.polling);
+            window.setInterval(this.sendHeight, this.settings.polling);
         }
 
         return this;
