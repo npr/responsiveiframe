@@ -8,7 +8,9 @@ Using iframes in a responsive page can be frustrating. It&rsquo;s easy enough to
 
 Use case: The NPR Visuals team uses Pym.js to embed small custom bits of code (charts, maps, etc.) inside our CMS without CSS or JavaScript conflicts. [See an example of this in action.](http://www.npr.org/2014/03/25/293870089/maze-of-college-costs-and-aid-programs-trap-some-families)
 
-### [&rsaquo; Read the Documentation](http://blog.apps.npr.org/pym.js/)
+### [&rsaquo; Read the documentation](http://blog.apps.npr.org/pym.js/)
+
+### [&rsaquo; Browse the API](http://blog.apps.npr.org/pym.js/api/)
 
 ## Generating API docs
 
@@ -23,7 +25,7 @@ npm install -g jsdoc@"<=3.3.0"
 Then
 
 ```
-jsdoc src/pym.js
+jsdoc -d api src
 ```
 
 ## License & Credits
