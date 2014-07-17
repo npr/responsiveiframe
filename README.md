@@ -38,3 +38,4 @@ Additional contributors:
 
 * [Pierre-Yves Jamon](https://github.com/Pym) 
 * [jugglinmike](https://github.com/jugglinmike)
+* [David Rogers](https://github.com/al-the-x)
