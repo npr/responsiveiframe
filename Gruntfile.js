@@ -24,6 +24,10 @@ module.exports = function(grunt) {
         "package.json",
       ],
       lib: {
+        options: {
+          browser: true,
+          predef: ['define']
+        },
         src: "src/**/*.js",
       }
     },
@@ -45,5 +49,4 @@ module.exports = function(grunt) {
 
   // Default task.
   grunt.registerTask("default", ["jshint"]);
-
 };

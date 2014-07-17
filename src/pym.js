@@ -22,7 +22,7 @@
     * @param {String} name The name of the paramter to get from the URL.
     */
     var _getParameterByName = function(name) {
-        var regex = new RegExp("[\\?&]" + name.replace(/[\[]/, '\\\[').replace(/[\]]/, '\\\]') + '=([^&#]*)');
+        var regex = new RegExp("[\\?&]" + name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]') + '=([^&#]*)');
         var results = regex.exec(location.search);
 
         if (results === null) {
@@ -47,7 +47,7 @@
         }
 
         return true;
-    }
+    };
 
     /**
      * Construct a message to send between frames.
@@ -64,7 +64,7 @@
         var bits = ['pym', id, messageType, message];
 
         return bits.join(MESSAGE_DELIMITER);
-    }
+    };
 
     /**
      * Construct a regex to validate and parse messages.
@@ -76,7 +76,7 @@
         var bits = ['pym', id, '(\\S+)', '(.+)'];
 
         return new RegExp('^' + bits.join(MESSAGE_DELIMITER) + '$');
-    }
+    };
 
     /**
      * Initialize Pym for elements on page that have data-pym attributes.
@@ -182,7 +182,7 @@
 
             // Add an event listener that will handle redrawing the child on resize.
             var that = this;
-            window.addEventListener('resize', function(e) {
+            window.addEventListener('resize', function() {
                 that.sendWidth();
             });
         };
@@ -302,7 +302,7 @@
         // Add a listener for processing messages from the child.
         var that = this;
         window.addEventListener('message', function(e) {
-            return that._processMessage(e)
+            return that._processMessage(e);
         }, false);
 
         // Construct the iframe in the container element.
@@ -446,7 +446,7 @@
             var width = parseInt(message);
 
             // Change the width if it's different.
-            if (width != this.parentWidth) {
+            if (width !== this.parentWidth) {
                 this.parentWidth = width;
 
                 // Call the callback function if it exists.
