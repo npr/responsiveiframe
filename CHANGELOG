@@ -1,6 +1,9 @@
 0.1.2
 -----
 
+* Add API documentation. (#52)
+* Refactor public and private APIs to have more obvious names.
+* Add support for generic message passing. (#49)
 * Support specifying pym div's with data attributes. (#44)
 
 0.1.1
