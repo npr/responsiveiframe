@@ -12,20 +12,20 @@ Use case: The NPR Visuals team uses Pym.js to embed small custom bits of code (c
 
 ### [&rsaquo; Browse the API](http://blog.apps.npr.org/pym.js/api/)
 
-## Generating API docs
+## Development tasks
 
-API documention can be generated with [jsdoc](https://github.com/jsdoc3/jsdoc).
+Grunt configuration is included for running common development tasks.
 
-To install it:
-
-```
-npm install -g jsdoc@"<=3.3.0"
-```
-
-Then
+Javascript can be linted with [jshint](http://jshint.com/):
 
 ```
-jsdoc -d api src
+grunt jshint
+```
+
+API documention can be generated with [jsdoc](https://github.com/jsdoc3/jsdoc):
+
+```
+grunt jsdoc
 ```
 
 ## License & Credits

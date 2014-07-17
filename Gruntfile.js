@@ -3,6 +3,7 @@ module.exports = function(grunt) {
 
   // Project configuration.
   grunt.initConfig({
+
     // Task configuration.
     jshint: {
       options: {
@@ -31,6 +32,14 @@ module.exports = function(grunt) {
         src: "src/**/*.js",
       }
     },
+    jsdoc: {
+      dist: {
+        src: "<%= jshint.lib.src %>",
+        options: {
+          destination: "api"
+        }
+      }
+    },
     watch: {
       jshint: {
         files: "<%= jshint.files  %>",
@@ -46,6 +55,7 @@ module.exports = function(grunt) {
   // These plugins provide necessary tasks.
   grunt.loadNpmTasks("grunt-contrib-jshint");
   grunt.loadNpmTasks("grunt-contrib-watch");
+  grunt.loadNpmTasks("grunt-jsdoc");
 
   // Default task.
   grunt.registerTask("default", ["jshint"]);
